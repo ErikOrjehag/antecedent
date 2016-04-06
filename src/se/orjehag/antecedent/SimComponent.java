@@ -2,12 +2,15 @@ package se.orjehag.antecedent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 /**
  * Created by erik on 20/03/16.
  */
-public class SimComponent extends JComponent {
+public class SimComponent extends JComponent implements MouseListener, MouseMotionListener {
 
     private final int WIDTH = 720, HEIGHT = 420;
     private final int GRID_SIZE = 20;
@@ -16,6 +19,8 @@ public class SimComponent extends JComponent {
 
     public SimComponent() {
         simulation = new Simulation();
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     @Override public Dimension getPreferredSize() {
@@ -33,6 +38,7 @@ public class SimComponent extends JComponent {
     }
 
     private void drawGrid(Graphics2D g2d) {
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (gridImage == null) {
             gridImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
             int color = new Color(160, 160, 160).getRGB();
@@ -44,5 +50,44 @@ public class SimComponent extends JComponent {
         }
         g2d.drawImage(gridImage, null, null);
         simulation.draw(g2d);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        simulation.mousePressed(e);
+        repaint(); // TODO
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        simulation.mouseReleased(e);
+        repaint(); // TODO
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        simulation.mouseMoved(e);
+        repaint(); // TODO
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        simulation.mouseMoved(e);
+        repaint(); // TODO
     }
 }
