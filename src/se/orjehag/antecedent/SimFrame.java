@@ -27,8 +27,22 @@ public class SimFrame extends JFrame {
         button.setText("Save");
         toolBar.add(button);*/
 
+        GridLayout grid = new GridLayout(5, 2);
+        JPanel panel = new JPanel();
+        panel.setLayout(grid);
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+        panel.add(new JButton("test"));
+
         JScrollPane scrollPane = new JScrollPane(
-                new JPanel(),
+                panel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         );

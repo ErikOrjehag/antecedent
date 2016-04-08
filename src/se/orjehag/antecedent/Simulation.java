@@ -7,6 +7,7 @@ import se.orjehag.antecedent.logical.gate.AndGate;
 import se.orjehag.antecedent.logical.gate.NotGate;
 import se.orjehag.antecedent.logical.input.*;
 import se.orjehag.antecedent.logical.input.Button;
+import se.orjehag.antecedent.logical.output.FourBitDisplay;
 import se.orjehag.antecedent.logical.output.Lamp;
 
 import java.awt.*;
@@ -30,7 +31,7 @@ public class Simulation {
         placeables.add(high1);
         logicals.add(high1);
 
-        Low low = new Low(250, 60);
+        Low low = new Low(250, 370);
         placeables.add(low);
         logicals.add(low);
 
@@ -54,11 +55,19 @@ public class Simulation {
         placeables.add(not);
         logicals.add(not);
 
+        FourBitDisplay display = new FourBitDisplay(600, 350);
+        placeables.add(display);
+        logicals.add(display);
+
         and.inputs.get(1).connectTo(high1.outputs.get(0));
         lamp.inputs.get(0).connectTo(and.outputs.get(0));
         and.inputs.get(0).connectTo(button.outputs.get(0));
         not.inputs.get(0).connectTo(and.outputs.get(0));
         lamp2.inputs.get(0).connectTo(not.outputs.get(0));
+        display.inputs.get(0).connectTo(and.outputs.get(0));
+        display.inputs.get(1).connectTo(high1.outputs.get(0));
+        display.inputs.get(2).connectTo(high1.outputs.get(0));
+        display.inputs.get(3).connectTo((low.outputs.get(0)));
 
         step();
     }
