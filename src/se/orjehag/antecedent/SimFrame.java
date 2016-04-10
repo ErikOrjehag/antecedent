@@ -27,10 +27,13 @@ public class SimFrame extends JFrame {
         button.setText("Save");
         toolBar.add(button);*/
 
+        DraggableComponent drag = new DraggableComponent();
+
         GridLayout grid = new GridLayout(5, 2);
         JPanel panel = new JPanel();
         panel.setLayout(grid);
-        panel.add(new JButton("test"));
+        panel.add(drag);
+        //panel.add(new JButton("test"));
         panel.add(new JButton("test"));
         panel.add(new JButton("test"));
         panel.add(new JButton("test"));

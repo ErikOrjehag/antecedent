@@ -37,7 +37,7 @@ public abstract class Logical extends Placeable {
         int inLen = inputs.size();
         boolean[] in = new boolean[inLen];
         for (int i = 0; i < inLen; i++) {
-            in[i] = inputs.get(0).getValue();
+            in[i] = inputs.get(i).getValue();
         }
 
         boolean[] out = func(in);
@@ -45,7 +45,7 @@ public abstract class Logical extends Placeable {
         assert outputs.size() == out.length;
 
         for (int i = 0; i < outputs.size(); i++) {
-            outputs.get(0).setValue(out[i]);
+            outputs.get(i).setValue(out[i]);
         }
     }
 
