@@ -1,6 +1,7 @@
 package se.orjehag.antecedent;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -9,7 +10,7 @@ import java.awt.event.ActionEvent;
  */
 public class SimFrame extends JFrame {
 
-    final static int WIDTH = 720, HEIGHT = 420;
+    final static int WIDTH = 1000, HEIGHT = 600;
     private SimComponent simComponent;
 
     public SimFrame() {
@@ -17,41 +18,37 @@ public class SimFrame extends JFrame {
 
         setLayout(new BorderLayout());
 
+        JLayeredPane layers = new JLayeredPane();
+        add(layers, BorderLayout.CENTER);
+        layers.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        JPanel back = new JPanel();
+        //back.setBackground(Color.BLUE);
+        //back.setOpaque(true);
+        back.setBounds(0, 0, WIDTH, HEIGHT);
+        layers.add(back, new Integer(0));
+
+        JPanel front = new JPanel();
+        front.setLayout(null);
+        //front.setBackground(Color.GREEN);
+        front.setOpaque(false);
+        front.setBounds(0, 0, WIDTH, HEIGHT);
+        layers.add(front, new Integer(1));
+
+        MyDraggableComponent myDrag = new MyDraggableComponent();
+        front.add(myDrag);
+
+
+        back.setLayout(new BorderLayout());
+
         simComponent = new SimComponent();
-        add(simComponent, BorderLayout.CENTER);
+        back.add(simComponent, BorderLayout.CENTER);
 
-        /*JToolBar toolBar = new JToolBar("Still draggable");
-        toolBar.setFloatable(false);
-        add(toolBar, BorderLayout.PAGE_START);
-        JButton button = new JButton();
-        button.setText("Save");
-        toolBar.add(button);*/
 
-        DraggableComponent drag = new DraggableComponent();
-
-        GridLayout grid = new GridLayout(5, 2);
-        JPanel panel = new JPanel();
-        panel.setLayout(grid);
-        panel.add(drag);
-        //panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-        panel.add(new JButton("test"));
-
-        JScrollPane scrollPane = new JScrollPane(
-                panel,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-        );
-        add(scrollPane, BorderLayout.WEST);
+        back.add(new ComponentDrawer(), BorderLayout.WEST);
 
         createMenu();
+        //createToolbar();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -77,6 +74,15 @@ public class SimFrame extends JFrame {
         menuBar.add(examples);
 
         setJMenuBar(menuBar);
+    }
+
+    private void createToolbar() {
+        JToolBar toolBar = new JToolBar("Still draggable");
+        toolBar.setFloatable(false);
+        add(toolBar, BorderLayout.PAGE_START);
+        JButton button = new JButton();
+        button.setText("Save");
+        toolBar.add(button);
     }
 
     private void quitCallback(final ActionEvent actionEvent) {
