@@ -1,7 +1,6 @@
-package se.orjehag.antecedent.logical;
+package se.orjehag.antecedent.placable.logical;
 
 import se.orjehag.antecedent.Point;
-import se.orjehag.antecedent.logical.Logical;
 
 /**
  * Created by erik on 31/03/16.

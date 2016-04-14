@@ -1,4 +1,4 @@
-package se.orjehag.antecedent.logical;
+package se.orjehag.antecedent.placable.logical;
 
 /**
  * Created by erik on 05/04/16.

@@ -1,22 +1,28 @@
 package se.orjehag.antecedent;
 
+import se.orjehag.antecedent.placable.logical.Placeable;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.lang.reflect.InvocationTargetException;
+import java.awt.event.MouseListener;
 
 /**
  * Created by erik on 12/04/16.
  */
-public class ComponentIcon extends JComponent {
+public class ComponentDrawerItem extends JComponent implements MouseListener {
 
     Dimension size = new Dimension(90, 80);
     Placeable placeable;
+    ComponentGrabListener grabListener;
 
-    public ComponentIcon(Placeable placeable) {
+    public ComponentDrawerItem(ComponentGrabListener grabListener, Placeable placeable) {
         setPreferredSize(size);
+        this.grabListener = grabListener;
         this.placeable = placeable;
         //this.placeable = placeClass.getDeclaredConstructor(new Class[] { int.class, int.class }).newInstance(0, 0);
+        addMouseListener(this);
     }
 
     @Override protected void paintComponent(Graphics g) {
@@ -30,4 +36,23 @@ public class ComponentIcon extends JComponent {
         g2d.setTransform(origTransform);
     }
 
+    @Override public void mouseClicked(final MouseEvent e) {
+
+    }
+
+    @Override public void mousePressed(final MouseEvent e) {
+        grabListener.grabComponent(this);
+    }
+
+    @Override public void mouseReleased(final MouseEvent e) {
+
+    }
+
+    @Override public void mouseEntered(final MouseEvent e) {
+
+    }
+
+    @Override public void mouseExited(final MouseEvent e) {
+
+    }
 }

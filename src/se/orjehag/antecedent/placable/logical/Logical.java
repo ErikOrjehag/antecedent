@@ -1,6 +1,4 @@
-package se.orjehag.antecedent.logical;
-
-import se.orjehag.antecedent.*;
+package se.orjehag.antecedent.placable.logical;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

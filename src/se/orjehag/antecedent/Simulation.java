@@ -1,17 +1,14 @@
 package se.orjehag.antecedent;
 
-import se.orjehag.antecedent.logical.InputSocket;
-import se.orjehag.antecedent.logical.Logical;
-import se.orjehag.antecedent.logical.OutputSocket;
-import se.orjehag.antecedent.logical.gate.AndGate;
-import se.orjehag.antecedent.logical.gate.NotGate;
-import se.orjehag.antecedent.logical.gate.OrGate;
-import se.orjehag.antecedent.logical.gate.XOrGate;
-import se.orjehag.antecedent.logical.input.*;
-import se.orjehag.antecedent.logical.input.Button;
-import se.orjehag.antecedent.logical.output.FourBitDisplay;
-import se.orjehag.antecedent.logical.output.Lamp;
-import sun.rmi.runtime.Log;
+import se.orjehag.antecedent.placable.logical.*;
+import se.orjehag.antecedent.placable.logical.gate.AndGate;
+import se.orjehag.antecedent.placable.logical.gate.NotGate;
+import se.orjehag.antecedent.placable.logical.gate.OrGate;
+import se.orjehag.antecedent.placable.logical.gate.XOrGate;
+import se.orjehag.antecedent.placable.logical.input.*;
+import se.orjehag.antecedent.placable.logical.input.Button;
+import se.orjehag.antecedent.placable.logical.output.FourBitDisplay;
+import se.orjehag.antecedent.placable.logical.output.Lamp;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -27,7 +24,7 @@ public class Simulation {
     public ArrayList<Logical> logicals = new ArrayList<>();
 
     public Simulation() {
-        test2();
+        test1();
         step();
     }
 
@@ -100,7 +97,7 @@ public class Simulation {
     }
 
     public void test1() {
-        Label label = new Label(150, 50, "Test");
+        Text label = new Text(150, 50, "Test");
         placeables.add(label);
 
         High high1 = new High(200, 300);
@@ -119,7 +116,7 @@ public class Simulation {
         placeables.add(lamp);
         logicals.add(lamp);
 
-        se.orjehag.antecedent.logical.input.Button button = new Button(50, 100);
+        se.orjehag.antecedent.placable.logical.input.Button button = new Button(50, 100);
         placeables.add(button);
         logicals.add(button);
 
@@ -147,11 +144,14 @@ public class Simulation {
     }
 
     public void test2() {
-        Label cinLabel = (Label)addPlacable(new Label(100, 50, "Carry in"));
+        Text
+                cinLabel = (Text)addPlacable(new Text(100, 50, "Carry in"));
         Switch cin = (Switch)addLogical(new Switch(100, 100));
-        Label iaLabel = (Label)addPlacable(new Label(100, 150, "Input A"));
+        Text
+                iaLabel = (Text)addPlacable(new Text(100, 150, "Input A"));
         Switch ia = (Switch)addLogical(new Switch(100, 200));
-        Label ibLabel = (Label)addPlacable(new Label(100, 250, "Input B"));
+        Text
+                ibLabel = (Text)addPlacable(new Text(100, 250, "Input B"));
         Switch ib = (Switch)addLogical(new Switch(100, 300));
         XOrGate xor1 = (XOrGate)addLogical(new XOrGate(300, 200));
         xor1.inputs.get(0).connectTo(ia.outputs.get(0));

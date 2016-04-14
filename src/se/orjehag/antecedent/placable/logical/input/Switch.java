@@ -1,6 +1,6 @@
-package se.orjehag.antecedent.logical.input;
+package se.orjehag.antecedent.placable.logical.input;
 
-import se.orjehag.antecedent.logical.Logical;
+import se.orjehag.antecedent.placable.logical.Logical;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

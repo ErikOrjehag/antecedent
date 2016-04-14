@@ -1,9 +1,8 @@
-package se.orjehag.antecedent.logical.output;
+package se.orjehag.antecedent.placable.logical.output;
 
-import se.orjehag.antecedent.logical.Logical;
+import se.orjehag.antecedent.placable.logical.Logical;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by erik on 05/04/16.

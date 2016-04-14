@@ -1,14 +1,15 @@
 package se.orjehag.antecedent;
 
+import se.orjehag.antecedent.placable.logical.Placeable;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
  * Created by erik on 19/03/16.
  */
-public class SimFrame extends JFrame {
+public class SimFrame extends JFrame implements ComponentGrabListener {
 
     final static int WIDTH = 1000, HEIGHT = 600;
     private SimComponent simComponent;
@@ -45,7 +46,7 @@ public class SimFrame extends JFrame {
         back.add(simComponent, BorderLayout.CENTER);
 
 
-        back.add(new ComponentDrawer(), BorderLayout.WEST);
+        back.add(new ComponentDrawer(this), BorderLayout.WEST);
 
         createMenu();
         //createToolbar();
@@ -89,4 +90,7 @@ public class SimFrame extends JFrame {
         System.exit(0);
     }
 
+    @Override public void grabComponent(final ComponentDrawerItem item) {
+        System.out.println("Grabbed item: " + item);
+    }
 }

@@ -1,19 +1,22 @@
-package se.orjehag.antecedent;
+package se.orjehag.antecedent.placable.logical;
+
+import se.orjehag.antecedent.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import se.orjehag.antecedent.Point;
 
 /**
  * Created by erik on 31/03/16.
  */
 public abstract class Placeable {
 
-    protected Point position;
+    protected se.orjehag.antecedent.Point position;
     private ArrayList<DragListener> dragListeners = new ArrayList<>();
     protected int width, height;
     private boolean isDragging = false;
-    private Point mouseOffset;
+    private se.orjehag.antecedent.Point mouseOffset;
 
     public Placeable(int x, int y, int width, int height) {
         position = new Point(x, y);
@@ -31,7 +34,7 @@ public abstract class Placeable {
         dragListeners.remove(listener);
     }
 
-    public Point getPosition() {
+    public se.orjehag.antecedent.Point getPosition() {
         return position;
     }
 
@@ -48,7 +51,7 @@ public abstract class Placeable {
 
     public void mouseMoved(MouseEvent e) {
         if (isDragging) {
-            Point mousePosition = new Point(e.getX(), e.getY());
+            se.orjehag.antecedent.Point mousePosition = new Point(e.getX(), e.getY());
             position.set(mousePosition.plus(mouseOffset));
         }
     }

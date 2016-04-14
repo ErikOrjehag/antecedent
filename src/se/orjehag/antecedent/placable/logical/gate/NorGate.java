@@ -1,6 +1,6 @@
-package se.orjehag.antecedent.logical.gate;
+package se.orjehag.antecedent.placable.logical.gate;
 
-import se.orjehag.antecedent.logical.Logical;
+import se.orjehag.antecedent.placable.logical.Logical;
 
 import java.awt.*;
 
