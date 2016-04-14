@@ -16,9 +16,7 @@ import java.awt.dnd.DropTargetListener;
  */
 public class SimComponent extends JComponent implements MouseListener, MouseMotionListener, DropTargetListener {
 
-    private final int WIDTH = 720, HEIGHT = 420;
     private final int GRID_SIZE = 20;
-    private BufferedImage gridImage;
     private Simulation simulation;
 
     public SimComponent() {
@@ -36,23 +34,24 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         final Graphics2D g2d = (Graphics2D) g;
 
         g2d.setColor(new Color(220, 220, 220));
-        g2d.fillRect(0, 0, WIDTH, HEIGHT);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
 
         drawGrid(g2d);
     }
 
     private void drawGrid(Graphics2D g2d) {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        if (gridImage == null) {
-            gridImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-            int color = new Color(160, 160, 160).getRGB();
-            for (int x = 0; x < WIDTH / GRID_SIZE; x++) {
-                for (int y = 0; y < HEIGHT / GRID_SIZE; y++) {
-                    gridImage.setRGB(x * GRID_SIZE, y * GRID_SIZE, color);
-                }
+
+        System.out.println(getWidth() + " " + getHeight());
+        BufferedImage gridImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        int color = new Color(160, 160, 160).getRGB();
+        for (int x = 0; x < getWidth(); x += GRID_SIZE) {
+            for (int y = 0; y < getHeight(); y += GRID_SIZE) {
+                gridImage.setRGB(x, y, color);
             }
         }
         g2d.drawImage(gridImage, null, null);
+
         simulation.draw(g2d);
     }
 

@@ -5,6 +5,7 @@ import se.orjehag.antecedent.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import se.orjehag.antecedent.Point;
 
 /**
  * Created by erik on 31/03/16.
@@ -49,15 +50,15 @@ public abstract class Logical extends Placeable {
         }
     }
 
-    public se.orjehag.antecedent.Point relativeSocketPosition(Socket socket) {
+    public Point relativeSocketPosition(Socket socket) {
         assert inputs.contains(socket) || outputs.contains(socket);
 
         boolean isInput = inputs.contains(socket);
         int index = isInput ? inputs.indexOf(socket) : outputs.indexOf(socket);
         int len = isInput ? inputs.size() : outputs.size();
         int x = (width / 2 + 10) * (isInput ? -1 : 1);
-        int y = (int)(index * 20 + (len - 1) / 2f * -20);
-        return new se.orjehag.antecedent.Point(x, y);
+        int y = (int)(index * 15 + (len - 1) / 2f * -15);
+        return new Point(x, y);
     }
 
     public void draw(Graphics2D g2d) {
@@ -73,7 +74,7 @@ public abstract class Logical extends Placeable {
 
         for (int i = 0; i < inLen; i++) {
             int x = -width / 2;
-            int y = (int)(i * 20 + (inLen - 1) / 2f * -20);
+            int y = (int)(i * 15 + (inLen - 1) / 2f * -15);
             g2d.drawLine(x, y, x - 10, y);
             g2d.fillOval(x - 15, y - 5, 10, 10);
         }

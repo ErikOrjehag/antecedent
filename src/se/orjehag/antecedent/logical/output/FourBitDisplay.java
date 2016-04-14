@@ -12,7 +12,7 @@ public class FourBitDisplay extends Logical {
     public FourBitDisplay(int x, int y) {
         super(x, y);
         addInputs(4);
-        height = 80;
+        height = 70;
     }
 
     @Override

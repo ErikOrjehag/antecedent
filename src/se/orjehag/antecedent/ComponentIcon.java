@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ComponentIcon extends JComponent {
 
-    Dimension size = new Dimension(90, 90);
+    Dimension size = new Dimension(90, 80);
     Placeable placeable;
 
     public ComponentIcon(Placeable placeable) {
@@ -21,8 +21,8 @@ public class ComponentIcon extends JComponent {
 
     @Override protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
-        g2d.setColor(new Color(200, 200, 200));
-        g2d.fillRect(0, 0, size.width, size.height);
+        //g2d.setColor(new Color(200, 200, 200));
+        //g2d.fillRect(0, 0, size.width, size.height);
 
         AffineTransform origTransform = g2d.getTransform();
         g2d.translate(size.width / 2, size.height / 2);
