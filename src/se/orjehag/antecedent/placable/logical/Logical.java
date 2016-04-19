@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import se.orjehag.antecedent.Point;
+import se.orjehag.antecedent.placable.Placeable;
 
 /**
  * Created by erik on 31/03/16.

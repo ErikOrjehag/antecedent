@@ -1,6 +1,6 @@
 package se.orjehag.antecedent;
 
-import se.orjehag.antecedent.placable.logical.Text;
+import se.orjehag.antecedent.placable.Text;
 import se.orjehag.antecedent.placable.logical.gate.AndGate;
 import se.orjehag.antecedent.placable.logical.gate.NandGate;
 import se.orjehag.antecedent.placable.logical.gate.NorGate;
@@ -28,7 +28,7 @@ public class ComponentDrawer extends JScrollPane {
 
     JPanel panel;
 
-    public ComponentDrawer(ComponentGrabListener grabListener) {
+    public ComponentDrawer(ComponentGrabListener grabListener, JPanel dragPanel, SimComponent dropTarget) {
         super(new JPanel(), VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         panel = (JPanel) getViewport().getView();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -36,37 +36,35 @@ public class ComponentDrawer extends JScrollPane {
         addTitle("Gates");
         JPanel gates = new JPanel();
         gates.setLayout(new GridLayout(4, 2));
-        //gates.setPreferredSize(new Dimension(200, 300));
-        gates.add(new ComponentDrawerItem(grabListener, new AndGate(0, 0)));
-        gates.add(new ComponentDrawerItem(grabListener, new NandGate(0, 0)));
-        gates.add(new ComponentDrawerItem(grabListener, new OrGate(0, 0)));
-        gates.add(new ComponentDrawerItem(grabListener, new NorGate(0, 0)));
-        gates.add(new ComponentDrawerItem(grabListener, new XOrGate(0, 0)));
-        gates.add(new ComponentDrawerItem(grabListener, new XnorGate(0, 0)));
-        gates.add(new ComponentDrawerItem(grabListener, new NotGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new AndGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new NandGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new OrGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new NorGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new XOrGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new XnorGate(0, 0)));
+        gates.add(new ComponentDrawerItem(this, gates, dragPanel, dropTarget, grabListener, new NotGate(0, 0)));
         panel.add(gates);
 
         addTitle("Inputs");
         JPanel inputs = new JPanel();
         inputs.setLayout(new GridLayout(2, 2));
-        //inputs.setPreferredSize(new Dimension(200, 300));
-        inputs.add(new ComponentDrawerItem(grabListener, new High(0, 0)));
-        inputs.add(new ComponentDrawerItem(grabListener, new Low(0, 0)));
-        inputs.add(new ComponentDrawerItem(grabListener, new Button(0, 0)));
-        inputs.add(new ComponentDrawerItem(grabListener, new Switch(0, 0)));
+        inputs.add(new ComponentDrawerItem(this, inputs, dragPanel, dropTarget, grabListener, new High(0, 0)));
+        inputs.add(new ComponentDrawerItem(this, inputs, dragPanel, dropTarget, grabListener, new Low(0, 0)));
+        inputs.add(new ComponentDrawerItem(this, inputs, dragPanel, dropTarget, grabListener, new Button(0, 0)));
+        inputs.add(new ComponentDrawerItem(this, inputs, dragPanel, dropTarget, grabListener, new Switch(0, 0)));
         panel.add(inputs);
 
         addTitle("Outputs");
         JPanel outputs = new JPanel();
         outputs.setLayout(new GridLayout(1, 2));
-        outputs.add(new ComponentDrawerItem(grabListener, new FourBitDisplay(0, 0)));
-        outputs.add(new ComponentDrawerItem(grabListener, new Lamp(0, 0)));
+        outputs.add(new ComponentDrawerItem(this, outputs, dragPanel, dropTarget, grabListener, new FourBitDisplay(0, 0)));
+        outputs.add(new ComponentDrawerItem(this, outputs, dragPanel, dropTarget, grabListener, new Lamp(0, 0)));
         panel.add(outputs);
 
         addTitle("Others");
         JPanel others = new JPanel();
         others.setLayout(new GridLayout(1, 2));
-        others.add(new ComponentDrawerItem(grabListener, new Text(0, 0, "Text")));
+        others.add(new ComponentDrawerItem(this, outputs, dragPanel, dropTarget, grabListener, new Text(0, 0, "Text")));
     }
 
     private void addTitle(String title) {

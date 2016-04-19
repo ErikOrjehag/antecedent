@@ -1,6 +1,10 @@
 package se.orjehag.antecedent;
 
+import java.awt.event.MouseEvent;
+
 public interface ComponentGrabListener
 {
-    public void grabComponent(ComponentDrawerItem item);
+    void grabComponent(ComponentDrawerItem item);
+    void mousePressed(MouseEvent e);
+    void mouseDragged(MouseEvent e);
 }

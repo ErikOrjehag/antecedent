@@ -1,4 +1,4 @@
-package se.orjehag.antecedent.placable.logical;
+package se.orjehag.antecedent.placable;
 
 import se.orjehag.antecedent.*;
 

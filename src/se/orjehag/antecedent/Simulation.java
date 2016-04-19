@@ -1,5 +1,7 @@
 package se.orjehag.antecedent;
 
+import se.orjehag.antecedent.placable.Placeable;
+import se.orjehag.antecedent.placable.Text;
 import se.orjehag.antecedent.placable.logical.*;
 import se.orjehag.antecedent.placable.logical.gate.AndGate;
 import se.orjehag.antecedent.placable.logical.gate.NotGate;
