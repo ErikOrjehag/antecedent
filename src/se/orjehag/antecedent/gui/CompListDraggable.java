@@ -1,4 +1,4 @@
-package se.orjehag.antecedent;
+package se.orjehag.antecedent.gui;
 
 import java.awt.*;
 import java.awt.Point;
@@ -7,17 +7,17 @@ import java.awt.geom.AffineTransform;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MyDraggableComponent
+public class CompListDraggable
         extends JComponent {
 
     private volatile int screenX = 0;
     private volatile int screenY = 0;
     private volatile int myX = 0;
     private volatile int myY = 0;
-    private ComponentDrawerItem item;
+    private CompListItem item;
 
 
-    public MyDraggableComponent(ComponentDrawerItem item) {
+    public CompListDraggable(CompListItem item) {
 
         setBorder(new LineBorder(Color.BLUE, 3));
         setBackground(Color.WHITE);
@@ -33,10 +33,16 @@ public class MyDraggableComponent
         screenX = e.getXOnScreen();
         screenY = e.getYOnScreen();
 
-        Point p = new Point(item.getX(), item.getY());
-        Container parent = item.getParent();
-        Point pp = SwingUtilities.convertPoint(parent, p, MyDraggableComponent.this);
+        // Location of CompListItem.
+        Point p = item.getLocation();
 
+        // The parent JPanel with GridLayout inside the JScrollPane.
+        Container parent = item.getParent();
+
+        // Convert the local location of the CompListItem to the global location based on its parent.
+        Point pp = SwingUtilities.convertPoint(parent, p, CompListDraggable.this);
+
+        // TODO: Make this be a point.
         myX = (int) pp.getX();
         myY = (int) pp.getY();
     }

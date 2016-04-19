@@ -14,10 +14,10 @@ import java.awt.dnd.DragSourceListener;
 
 import javax.swing.JComponent;
 
-class DraggableComponent extends JComponent implements DragGestureListener, DragSourceListener {
+class asd extends JComponent implements DragGestureListener, DragSourceListener {
   DragSource dragSource;
 
-  public DraggableComponent() {
+  public asd() {
     dragSource = new DragSource();
     dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, this);
   }
