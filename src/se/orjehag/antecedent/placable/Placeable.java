@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import se.orjehag.antecedent.Point;
+import se.orjehag.antecedent.placable.logical.Logical;
 
 /**
  * Created by erik on 31/03/16.
@@ -18,10 +19,8 @@ public abstract class Placeable {
     private boolean isDragging = false;
     private se.orjehag.antecedent.Point mouseOffset;
 
-    public Placeable(int x, int y, int width, int height) {
+    public Placeable(int x, int y) {
         position = new Point(x, y);
-        this.width = width;
-        this.height = height;
     }
 
     public abstract void draw(Graphics2D g2d);
@@ -54,5 +53,9 @@ public abstract class Placeable {
             se.orjehag.antecedent.Point mousePosition = new Point(e.getX(), e.getY());
             position.set(mousePosition.plus(mouseOffset));
         }
+    }
+
+    public void addTo(ArrayList<Placeable> placeables, ArrayList<Logical> logicals) {
+        placeables.add(this);
     }
 }

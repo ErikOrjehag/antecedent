@@ -18,4 +18,8 @@ public abstract class Socket {
     }
 
     public abstract boolean getValue();
+
+    public boolean contains(Point point) {
+        return getPosition().distanceTo(point) < 10; // TODO
+    }
 }

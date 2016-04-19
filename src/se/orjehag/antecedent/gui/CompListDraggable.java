@@ -56,7 +56,6 @@ public class CompListDraggable
     @Override protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
-
         AffineTransform origTransform = g2d.getTransform();
         g2d.translate(item.size.width / 2, item.size.height / 2);
         item.placeable.draw(g2d);

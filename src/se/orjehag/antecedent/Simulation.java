@@ -2,17 +2,24 @@ package se.orjehag.antecedent;
 
 import se.orjehag.antecedent.placable.Placeable;
 import se.orjehag.antecedent.placable.Text;
-import se.orjehag.antecedent.placable.logical.*;
+import se.orjehag.antecedent.placable.logical.InputSocket;
+import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placable.logical.OutputSocket;
+import se.orjehag.antecedent.placable.logical.Socket;
 import se.orjehag.antecedent.placable.logical.gate.AndGate;
 import se.orjehag.antecedent.placable.logical.gate.NotGate;
 import se.orjehag.antecedent.placable.logical.gate.OrGate;
 import se.orjehag.antecedent.placable.logical.gate.XOrGate;
-import se.orjehag.antecedent.placable.logical.input.*;
 import se.orjehag.antecedent.placable.logical.input.Button;
+import se.orjehag.antecedent.placable.logical.input.High;
+import se.orjehag.antecedent.placable.logical.input.Low;
+import se.orjehag.antecedent.placable.logical.input.Switch;
 import se.orjehag.antecedent.placable.logical.output.FourBitDisplay;
 import se.orjehag.antecedent.placable.logical.output.Lamp;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.geom.CubicCurve2D;
 import java.util.ArrayList;
@@ -24,9 +31,12 @@ public class Simulation {
 
     public ArrayList<Placeable> placeables = new ArrayList<>();
     public ArrayList<Logical> logicals = new ArrayList<>();
+    private InputSocket fromInputSocket = null;
+    private OutputSocket fromOutputSocket = null;
+    private Point mousePos = new Point();
 
     public Simulation() {
-        test1();
+        test2();
         step();
     }
 
@@ -41,20 +51,87 @@ public class Simulation {
     }
 
     public void mousePressed(MouseEvent e) {
+
+        for (Logical logical : logicals) {
+            boolean shouldBreak = false;
+            for (OutputSocket outputSocket : logical.outputs) {
+                if (outputSocket.contains(mousePos)) {
+                    fromOutputSocket = outputSocket;
+                    shouldBreak = true;
+                    break;
+                }
+            }
+            if (shouldBreak) {
+                break;
+            }
+            for (InputSocket inputSocket : logical.inputs) {
+                if (inputSocket.contains(mousePos)) {
+                    if (inputSocket.isConnected()) {
+                        fromOutputSocket = inputSocket.getConnectedTo();
+                        inputSocket.disconnect();
+                    } else {
+                        fromInputSocket = inputSocket;
+                    }
+                    shouldBreak = true;
+                    break;
+                }
+            }
+            if (shouldBreak) {
+                break;
+            }
+        }
+
         for (Placeable placable : placeables) {
             placable.mousePressed(e);
         }
-        step();
+
+        step(); // TODO
     }
 
     public void mouseReleased(MouseEvent e) {
+
+        for (Logical logical : logicals) {
+            boolean shouldBreak = false;
+            if (fromInputSocket != null) {
+                for (OutputSocket outputSocket : logical.outputs) {
+                    if (outputSocket.contains(mousePos)) {
+                        fromInputSocket.connectTo(outputSocket);
+                        shouldBreak = true;
+                        break;
+                    }
+                }
+                if (shouldBreak) {
+                    break;
+                }
+            } else if (fromOutputSocket != null) {
+                for (InputSocket inputSocket : logical.inputs) {
+                    if (inputSocket.contains(mousePos)) {
+                        fromOutputSocket.connectTo(inputSocket);
+                        shouldBreak = true;
+                        break;
+                    }
+                }
+                if (shouldBreak) {
+                    break;
+                }
+            }
+        }
+
+        fromInputSocket = null;
+        fromOutputSocket = null;
+
         for (Placeable placable : placeables) {
             placable.mouseReleased(e);
         }
-        step();
+
+        step(); // TODO
     }
 
     public void mouseMoved(MouseEvent e) {
+
+        mousePos.x = e.getX();
+        mousePos.y = e.getY();
+
         for (Placeable placable : placeables) {
             placable.mouseMoved(e);
         }
@@ -72,7 +149,7 @@ public class Simulation {
         // Draw the wires between the logical components.
         for (Logical logical : logicals) {
             for (InputSocket input : logical.inputs) {
-                OutputSocket output = input.connectedTo();
+                OutputSocket output = input.getConnectedTo();
                 if (output != null) {
                     Point from = output.getPosition();
                     Point to = input.getPosition();
@@ -82,7 +159,11 @@ public class Simulation {
             }
         }
 
-        drawWire(g2d, new Point(20, 20), new Point(200, 5), false);
+        Socket fromSocket = fromInputSocket != null ? fromInputSocket : fromOutputSocket;
+
+        if (fromSocket != null) {
+            drawWire(g2d, fromSocket.getPosition(), mousePos, false);
+        }
 
     }
 
@@ -99,40 +180,32 @@ public class Simulation {
     }
 
     public void test1() {
-        Text label = new Text(150, 50, "Test");
-        placeables.add(label);
+        Text label = new Text(150, 50);
+        add(label);
 
         High high1 = new High(200, 300);
-        placeables.add(high1);
-        logicals.add(high1);
+        add(high1);
 
         Low low = new Low(250, 370);
-        placeables.add(low);
-        logicals.add(low);
+        add(low);
 
         AndGate and = new AndGate(350, 200);
-        placeables.add(and);
-        logicals.add(and);
+        add(and);
 
         Lamp lamp = new Lamp(600, 250);
-        placeables.add(lamp);
-        logicals.add(lamp);
+        add(lamp);
 
-        se.orjehag.antecedent.placable.logical.input.Button button = new Button(50, 100);
-        placeables.add(button);
-        logicals.add(button);
+        Button button = new Button(50, 100);
+        add(button);
 
         Lamp lamp2 = new Lamp(600, 100);
-        placeables.add(lamp2);
-        logicals.add(lamp2);
+        add(lamp2);
 
         NotGate not = new NotGate(470, 160);
-        placeables.add(not);
-        logicals.add(not);
+        add(not);
 
         FourBitDisplay display = new FourBitDisplay(600, 350);
-        placeables.add(display);
-        logicals.add(display);
+        add(display);
 
         and.inputs.get(1).connectTo(high1.outputs.get(0));
         lamp.inputs.get(0).connectTo(and.outputs.get(0));
@@ -146,55 +219,78 @@ public class Simulation {
     }
 
     public void test2() {
-        Text
-                cinLabel = (Text)addPlacable(new Text(100, 50, "Carry in"));
-        Switch cin = (Switch)addLogical(new Switch(100, 100));
-        Text
-                iaLabel = (Text)addPlacable(new Text(100, 150, "Input A"));
-        Switch ia = (Switch)addLogical(new Switch(100, 200));
-        Text
-                ibLabel = (Text)addPlacable(new Text(100, 250, "Input B"));
-        Switch ib = (Switch)addLogical(new Switch(100, 300));
-        XOrGate xor1 = (XOrGate)addLogical(new XOrGate(300, 200));
+        Text cinLabel = new Text(100, 50);
+        add(cinLabel);
+
+        Switch cin = new Switch(100, 100);
+        add(cin);
+
+        Text iaLabel = new Text(100, 150);
+        add(iaLabel);
+
+        Switch ia = new Switch(100, 200);
+        add(ia);
+
+        Text ibLabel = new Text(100, 250);
+        add(ibLabel);
+
+        Switch ib = new Switch(100, 300);
+        add(ib);
+
+        XOrGate xor1 = new XOrGate(300, 200);
+        add(xor1);
         xor1.inputs.get(0).connectTo(ia.outputs.get(0));
         xor1.inputs.get(1).connectTo(ib.outputs.get(0));
-        AndGate and1 = (AndGate)addLogical(new AndGate(300, 300));
+
+        AndGate and1 = new AndGate(300, 300);
+        add(and1);
         and1.inputs.get(0).connectTo(ia.outputs.get(0));
         and1.inputs.get(1).connectTo(ib.outputs.get(0));
-        XOrGate xor2 = (XOrGate)addLogical(new XOrGate(400, 200));
+
+        XOrGate xor2 = new XOrGate(400, 200);
+        add(xor2);
         xor2.inputs.get(0).connectTo(cin.outputs.get(0));
         xor2.inputs.get(1).connectTo(xor1.outputs.get(0));
-        AndGate and2 = (AndGate)addLogical(new AndGate(400, 300));
+
+        AndGate and2 = new AndGate(400, 300);
+        add(and2);
         and2.inputs.get(0).connectTo(cin.outputs.get(0));
         and2.inputs.get(1).connectTo(xor1.outputs.get(0));
-        OrGate or = (OrGate)addLogical(new OrGate(500, 300));
+
+        OrGate or = new OrGate(500, 300);
+        add(or);
         or.inputs.get(0).connectTo(and2.outputs.get(0));
         or.inputs.get(1).connectTo(and1.outputs.get(0));
-        Lamp sum = (Lamp)addLogical(new Lamp(600, 200));
+
+        Lamp sum = new Lamp(600, 200);
+        add(sum);
         sum.inputs.get(0).connectTo(xor2.outputs.get(0));
-        Lamp cout = (Lamp)addLogical(new Lamp(600, 300));
+
+        Lamp cout = new Lamp(600, 300);
+        add(cout);
         cout.inputs.get(0).connectTo(or.outputs.get(0));
     }
 
     public void test3() {
-        Button btn1 = (Button)addLogical(new Button(100, 100));
-        Button btn2 = (Button)addLogical(new Button(100, 200));
-        XOrGate xor = (XOrGate)addLogical(new XOrGate(300, 150));
-        Lamp res = (Lamp)addLogical(new Lamp(500, 150));
+        Button btn1 = new Button(100, 100);
+        add(btn1);
+
+        Button btn2 = new Button(100, 200);
+        add(btn2);
+
+        XOrGate xor = new XOrGate(300, 150);
+        add(xor);
+
+        Lamp res = new Lamp(500, 150);
+        add(res);
+
         xor.inputs.get(0).connectTo(btn1.outputs.get(0));
         xor.inputs.get(1).connectTo(btn2.outputs.get(0));
         res.inputs.get(0).connectTo(xor.outputs.get(0));
     }
 
-    public Logical addLogical(Logical logical) {
-        logicals.add(logical);
-        addPlacable(logical);
-        return logical;
-    }
-
-    public Placeable addPlacable(Placeable placeable) {
-        placeables.add(placeable);
-        return placeable;
+    public void add(Placeable placeable) {
+        placeable.addTo(placeables, logicals);
     }
 
 }

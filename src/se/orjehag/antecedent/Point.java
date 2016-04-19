@@ -39,4 +39,12 @@ public class Point {
     public Point minus(Point point) {
         return new Point(x - point.x, y - point.y);
     }
+
+    public float distanceTo(Point point) {
+        return minus(point).length();
+    }
+
+    public float length() {
+        return (float)Math.sqrt(x * x + y * y);
+    }
 }

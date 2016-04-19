@@ -37,35 +37,36 @@ public class CompList extends JScrollPane {
         addTitle("Gates");
         JPanel gates = new JPanel();
         gates.setLayout(new GridLayout(4, 2));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new AndGate(0, 0)));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new NandGate(0, 0)));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new OrGate(0, 0)));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new NorGate(0, 0)));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new XOrGate(0, 0)));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new XnorGate(0, 0)));
-        gates.add(new CompListItem(this, gates, dragPanel, dropTarget, new NotGate(0, 0)));
+        gates.add(new CompListItem(dragPanel, dropTarget, AndGate.class));
+        gates.add(new CompListItem(dragPanel, dropTarget, NandGate.class));
+        gates.add(new CompListItem(dragPanel, dropTarget, OrGate.class));
+        gates.add(new CompListItem(dragPanel, dropTarget, NorGate.class));
+        gates.add(new CompListItem(dragPanel, dropTarget, XOrGate.class));
+        gates.add(new CompListItem(dragPanel, dropTarget, XnorGate.class));
+        gates.add(new CompListItem(dragPanel, dropTarget, NotGate.class));
         panel.add(gates);
 
         addTitle("Inputs");
         JPanel inputs = new JPanel();
         inputs.setLayout(new GridLayout(2, 2));
-        inputs.add(new CompListItem(this, inputs, dragPanel, dropTarget, new High(0, 0)));
-        inputs.add(new CompListItem(this, inputs, dragPanel, dropTarget, new Low(0, 0)));
-        inputs.add(new CompListItem(this, inputs, dragPanel, dropTarget, new Button(0, 0)));
-        inputs.add(new CompListItem(this, inputs, dragPanel, dropTarget, new Switch(0, 0)));
+        inputs.add(new CompListItem(dragPanel, dropTarget, High.class));
+        inputs.add(new CompListItem(dragPanel, dropTarget, Low.class));
+        inputs.add(new CompListItem(dragPanel, dropTarget, Button.class));
+        inputs.add(new CompListItem(dragPanel, dropTarget, Switch.class));
         panel.add(inputs);
 
         addTitle("Outputs");
         JPanel outputs = new JPanel();
         outputs.setLayout(new GridLayout(1, 2));
-        outputs.add(new CompListItem(this, outputs, dragPanel, dropTarget, new FourBitDisplay(0, 0)));
-        outputs.add(new CompListItem(this, outputs, dragPanel, dropTarget, new Lamp(0, 0)));
+        outputs.add(new CompListItem(dragPanel, dropTarget, FourBitDisplay.class));
+        outputs.add(new CompListItem(dragPanel, dropTarget, Lamp.class));
         panel.add(outputs);
 
         addTitle("Others");
         JPanel others = new JPanel();
         others.setLayout(new GridLayout(1, 2));
-        others.add(new CompListItem(this, outputs, dragPanel, dropTarget, new Text(0, 0, "Text")));
+        others.add(new CompListItem(dragPanel, dropTarget, Text.class));
+        panel.add(others);
     }
 
     private void addTitle(String title) {

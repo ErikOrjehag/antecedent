@@ -9,9 +9,11 @@ public class Text extends Placeable {
 
     private String text;
 
-    public Text(int x, int y, String text) {
-        super(x, y, 80, 20);
-        this.text = text;
+    public Text(int x, int y) {
+        super(x, y);
+        width = 80;
+        height = 20;
+        text = "Text";
     }
 
     @Override

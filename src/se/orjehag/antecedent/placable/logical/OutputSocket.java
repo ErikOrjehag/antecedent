@@ -15,6 +15,10 @@ public class OutputSocket extends Socket {
         return value;
     }
 
+    public void connectTo(InputSocket inputSocket) {
+        inputSocket.connectTo(this);
+    }
+
     public void setValue(boolean value) {
         this.value = value;
     }

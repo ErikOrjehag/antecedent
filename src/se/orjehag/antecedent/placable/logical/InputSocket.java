@@ -19,7 +19,15 @@ public class InputSocket extends Socket {
         connectedTo = outputSocket;
     }
 
-    public OutputSocket connectedTo() {
+    public OutputSocket getConnectedTo() {
         return connectedTo;
+    }
+
+    public boolean isConnected() {
+        return connectedTo != null;
+    }
+
+    public void disconnect() {
+        connectedTo = null;
     }
 }

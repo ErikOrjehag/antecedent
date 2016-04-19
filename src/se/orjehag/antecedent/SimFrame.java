@@ -1,18 +1,19 @@
 package se.orjehag.antecedent;
 
+import se.orjehag.antecedent.gui.CompList;
+import se.orjehag.antecedent.gui.CompListDraggable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by erik on 19/03/16.
  */
-public class SimFrame extends JFrame implements ComponentGrabListener {
+public class SimFrame extends JFrame {
 
-    final static int WIDTH = 1000, HEIGHT = 600;
+    final static int WIDTH = 1400, HEIGHT = 700;
     private SimComponent simComponent;
-    private MyDraggableComponent draggable;
     private JPanel front;
     private JPanel back;
 
@@ -26,14 +27,11 @@ public class SimFrame extends JFrame implements ComponentGrabListener {
         layers.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         back = new JPanel();
-        //back.setBackground(Color.BLUE);
-        //back.setOpaque(true);
         back.setBounds(0, 0, WIDTH, HEIGHT);
         layers.add(back, new Integer(0));
 
         front = new JPanel();
         front.setLayout(null);
-        //front.setBackground(Color.GREEN);
         front.setOpaque(false);
         front.setBounds(0, 0, WIDTH, HEIGHT);
         layers.add(front, new Integer(1));
@@ -43,8 +41,7 @@ public class SimFrame extends JFrame implements ComponentGrabListener {
         simComponent = new SimComponent();
         back.add(simComponent, BorderLayout.CENTER);
 
-
-        back.add(new ComponentDrawer(this, front, simComponent), BorderLayout.WEST);
+        back.add(new CompList(front, simComponent), BorderLayout.WEST);
 
         createMenu();
         //createToolbar();
@@ -86,21 +83,5 @@ public class SimFrame extends JFrame implements ComponentGrabListener {
 
     private void quitCallback(final ActionEvent actionEvent) {
         System.exit(0);
-    }
-
-    @Override public void grabComponent(ComponentDrawerItem item) {
-        System.out.println("Grabbed item: " + item);
-        draggable = new MyDraggableComponent(item);
-        front.add(draggable);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        draggable.mousePressed(e);
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        draggable.mouseDragged(e);
     }
 }

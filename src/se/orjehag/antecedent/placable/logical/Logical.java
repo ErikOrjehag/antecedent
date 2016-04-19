@@ -15,7 +15,9 @@ public abstract class Logical extends Placeable {
     public ArrayList<OutputSocket> outputs = new ArrayList<>();
 
     public Logical(int x, int y) {
-        super(x, y, 50, 50);
+        super(x, y);
+        width = 50;
+        height = 50;
     }
 
     public abstract boolean[] func(boolean[] in);
@@ -88,5 +90,11 @@ public abstract class Logical extends Placeable {
         }
 
         g2d.setTransform(old);
+    }
+
+    @Override
+    public void addTo(ArrayList<Placeable> placeables, ArrayList<Logical> logicals) {
+        placeables.add(this);
+        logicals.add(this);
     }
 }
