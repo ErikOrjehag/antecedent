@@ -18,6 +18,7 @@ public class Text extends Placeable {
 
     @Override
     public void draw(Graphics2D g2d) {
+        super.draw(g2d);
         g2d.setColor(Color.BLACK);
         g2d.drawString(text, position.x, position.y);
     }

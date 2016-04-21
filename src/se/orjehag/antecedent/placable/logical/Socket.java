@@ -5,7 +5,7 @@ import se.orjehag.antecedent.Point;
 /**
  * Created by erik on 31/03/16.
  */
-public abstract class Socket {
+public abstract class Socket implements java.io.Serializable {
 
     private Logical owner;
 

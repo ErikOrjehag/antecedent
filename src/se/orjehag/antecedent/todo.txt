@@ -1,0 +1,9 @@
+
+- Code cleanup.
+- Grade criteria.
+- Images.
+- Flip flops.
+- Examples (class).
+- Edit properties on right click (text, image, maybe inputs).
+- Clock input.
+- Listeners for step and not step everywhere.

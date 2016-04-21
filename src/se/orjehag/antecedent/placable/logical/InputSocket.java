@@ -17,6 +17,7 @@ public class InputSocket extends Socket {
 
     public void connectTo(OutputSocket outputSocket) {
         connectedTo = outputSocket;
+        outputSocket.addDisconnectFromInputListener(this);
     }
 
     public OutputSocket getConnectedTo() {

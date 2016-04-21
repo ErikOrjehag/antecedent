@@ -63,6 +63,8 @@ public abstract class Logical extends Placeable {
     }
 
     public void draw(Graphics2D g2d) {
+        super.draw(g2d);
+
         AffineTransform old = g2d.getTransform();
         g2d.translate(position.x, position.y);
 
@@ -90,6 +92,12 @@ public abstract class Logical extends Placeable {
         }
 
         g2d.setTransform(old);
+    }
+
+    public boolean disconnect() {
+        inputs.forEach(InputSocket::disconnect);
+        outputs.forEach(OutputSocket::disconnect);
+        return true;
     }
 
     @Override

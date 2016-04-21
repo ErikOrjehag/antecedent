@@ -8,11 +8,10 @@ import java.awt.*;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.dnd.DropTargetListener;
+import java.io.*;
 
 /**
  * Created by erik on 20/03/16.
@@ -20,12 +19,24 @@ import java.awt.dnd.DropTargetListener;
 public class SimComponent extends JComponent implements MouseListener, MouseMotionListener, CompDropTarget {
 
     private final int GRID_SIZE = 20;
-    private Simulation simulation;
+    private Simulation simulation = new Simulation();
 
     public SimComponent() {
-        simulation = new Simulation();
+
         addMouseListener(this);
         addMouseMotionListener(this);
+
+        Action removeSelected = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                simulation.removeSelected();
+                repaint();
+            }
+        };
+
+        getInputMap().put(KeyStroke.getKeyStroke("DELETE"), "removeSelected");
+        getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "removeSelected");
+        getActionMap().put("removeSelected", removeSelected);
     }
 
     @Override public Dimension getPreferredSize() {
@@ -55,6 +66,14 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         g2d.drawImage(gridImage, null, null);
 
         simulation.draw(g2d);
+    }
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
+    public Simulation getSimulation() {
+        return simulation;
     }
 
     @Override

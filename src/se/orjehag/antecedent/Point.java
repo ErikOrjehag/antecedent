@@ -3,7 +3,7 @@ package se.orjehag.antecedent;
 /**
  * Created by erik on 05/04/16.
  */
-public class Point {
+public class Point implements java.io.Serializable {
 
     public int x, y;
 

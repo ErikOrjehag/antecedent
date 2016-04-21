@@ -39,6 +39,6 @@ public class Switch extends Logical {
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
         g2d.setColor(Color.BLACK);
-        g2d.drawString("BTN: " + (isOn ? "1" : "0"), position.x - 20, position.y);
+        g2d.drawString("SW: " + (isOn ? "1" : "0"), position.x - 20, position.y);
     }
 }

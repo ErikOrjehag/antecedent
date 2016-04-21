@@ -1,6 +1,5 @@
 package se.orjehag.antecedent.gui;
 
-import se.orjehag.antecedent.SimComponent;
 import se.orjehag.antecedent.placable.Placeable;
 
 import javax.swing.*;

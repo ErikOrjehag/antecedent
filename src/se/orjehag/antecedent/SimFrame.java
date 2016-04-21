@@ -1,11 +1,12 @@
 package se.orjehag.antecedent;
 
 import se.orjehag.antecedent.gui.CompList;
-import se.orjehag.antecedent.gui.CompListDraggable;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.*;
 
 /**
  * Created by erik on 19/03/16.
@@ -14,11 +15,16 @@ public class SimFrame extends JFrame {
 
     final static int WIDTH = 1400, HEIGHT = 700;
     private SimComponent simComponent;
-    private JPanel front;
-    private JPanel back;
+    private JPanel front = new JPanel();
+    private JPanel back = new JPanel();
+
+    private String fileExtension = "sim";
+    private JFileChooser fileChooser = new JFileChooser();
 
     public SimFrame() {
-        super("Antecedent");
+        super("Logic Simulator");
+
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Simulation files", fileExtension));
 
         setLayout(new BorderLayout());
 
@@ -26,11 +32,9 @@ public class SimFrame extends JFrame {
         add(layers, BorderLayout.CENTER);
         layers.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        back = new JPanel();
         back.setBounds(0, 0, WIDTH, HEIGHT);
         layers.add(back, new Integer(0));
 
-        front = new JPanel();
         front.setLayout(null);
         front.setOpaque(false);
         front.setBounds(0, 0, WIDTH, HEIGHT);
@@ -44,9 +48,8 @@ public class SimFrame extends JFrame {
         back.add(new CompList(front, simComponent), BorderLayout.WEST);
 
         createMenu();
-        //createToolbar();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -57,8 +60,10 @@ public class SimFrame extends JFrame {
         final JMenu file = new JMenu("File");
 
         final JMenuItem save = new JMenuItem("Save", 'S');
+        save.addActionListener(this::saveCallback);
         file.add(save);
         final JMenuItem open = new JMenuItem("Open", 'O');
+        open.addActionListener(this::openCallback);
         file.add(open);
         final JMenuItem quit = new JMenuItem("Quit", 'Q');
         quit.addActionListener(this::quitCallback);
@@ -72,16 +77,50 @@ public class SimFrame extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    private void createToolbar() {
-        JToolBar toolBar = new JToolBar("Still draggable");
-        toolBar.setFloatable(false);
-        add(toolBar, BorderLayout.PAGE_START);
-        JButton button = new JButton();
-        button.setText("Save");
-        toolBar.add(button);
-    }
-
     private void quitCallback(final ActionEvent actionEvent) {
         System.exit(0);
+    }
+
+    private void saveCallback(final ActionEvent actionEvent) {
+
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+
+            File file = fileChooser.getSelectedFile();
+            String fileName = file.toString();
+            if (!fileName.endsWith("." + fileExtension)) {
+                fileName += "." + fileExtension;
+            }
+
+            try {
+                FileOutputStream fileOut = new FileOutputStream(fileName);
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(simComponent.getSimulation());
+                out.close();
+                fileOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void openCallback(final ActionEvent actionEvent) {
+        Simulation simulation = null;
+
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                FileInputStream fileIn = new FileInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                simulation = (Simulation) in.readObject();
+                in.close();
+                fileIn.close();
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (simulation != null) {
+            simComponent.setSimulation(simulation);
+        }
     }
 }

@@ -7,14 +7,9 @@ import se.orjehag.antecedent.placable.logical.Logical;
 import se.orjehag.antecedent.placable.logical.OutputSocket;
 import se.orjehag.antecedent.placable.logical.Socket;
 import se.orjehag.antecedent.placable.logical.gate.AndGate;
-import se.orjehag.antecedent.placable.logical.gate.NotGate;
 import se.orjehag.antecedent.placable.logical.gate.OrGate;
 import se.orjehag.antecedent.placable.logical.gate.XOrGate;
-import se.orjehag.antecedent.placable.logical.input.Button;
-import se.orjehag.antecedent.placable.logical.input.High;
-import se.orjehag.antecedent.placable.logical.input.Low;
 import se.orjehag.antecedent.placable.logical.input.Switch;
-import se.orjehag.antecedent.placable.logical.output.FourBitDisplay;
 import se.orjehag.antecedent.placable.logical.output.Lamp;
 
 import java.awt.Graphics2D;
@@ -23,11 +18,12 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.geom.CubicCurve2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by erik on 31/03/16.
  */
-public class Simulation {
+public class Simulation implements java.io.Serializable {
 
     public ArrayList<Placeable> placeables = new ArrayList<>();
     public ArrayList<Logical> logicals = new ArrayList<>();
@@ -106,7 +102,7 @@ public class Simulation {
             } else if (fromOutputSocket != null) {
                 for (InputSocket inputSocket : logical.inputs) {
                     if (inputSocket.contains(mousePos)) {
-                        fromOutputSocket.connectTo(inputSocket);
+                        inputSocket.connectTo(fromOutputSocket);
                         shouldBreak = true;
                         break;
                     }
@@ -179,45 +175,6 @@ public class Simulation {
         g2d.draw(curve);
     }
 
-    public void test1() {
-        Text label = new Text(150, 50);
-        add(label);
-
-        High high1 = new High(200, 300);
-        add(high1);
-
-        Low low = new Low(250, 370);
-        add(low);
-
-        AndGate and = new AndGate(350, 200);
-        add(and);
-
-        Lamp lamp = new Lamp(600, 250);
-        add(lamp);
-
-        Button button = new Button(50, 100);
-        add(button);
-
-        Lamp lamp2 = new Lamp(600, 100);
-        add(lamp2);
-
-        NotGate not = new NotGate(470, 160);
-        add(not);
-
-        FourBitDisplay display = new FourBitDisplay(600, 350);
-        add(display);
-
-        and.inputs.get(1).connectTo(high1.outputs.get(0));
-        lamp.inputs.get(0).connectTo(and.outputs.get(0));
-        and.inputs.get(0).connectTo(button.outputs.get(0));
-        not.inputs.get(0).connectTo(and.outputs.get(0));
-        lamp2.inputs.get(0).connectTo(not.outputs.get(0));
-        display.inputs.get(0).connectTo(and.outputs.get(0));
-        display.inputs.get(1).connectTo(high1.outputs.get(0));
-        display.inputs.get(2).connectTo(high1.outputs.get(0));
-        display.inputs.get(3).connectTo((low.outputs.get(0)));
-    }
-
     public void test2() {
         Text cinLabel = new Text(100, 50);
         add(cinLabel);
@@ -271,26 +228,13 @@ public class Simulation {
         cout.inputs.get(0).connectTo(or.outputs.get(0));
     }
 
-    public void test3() {
-        Button btn1 = new Button(100, 100);
-        add(btn1);
-
-        Button btn2 = new Button(100, 200);
-        add(btn2);
-
-        XOrGate xor = new XOrGate(300, 150);
-        add(xor);
-
-        Lamp res = new Lamp(500, 150);
-        add(res);
-
-        xor.inputs.get(0).connectTo(btn1.outputs.get(0));
-        xor.inputs.get(1).connectTo(btn2.outputs.get(0));
-        res.inputs.get(0).connectTo(xor.outputs.get(0));
-    }
-
     public void add(Placeable placeable) {
         placeable.addTo(placeables, logicals);
+    }
+
+    public void removeSelected() {
+        placeables.removeIf(e -> (e.isSelected()));
+        logicals.removeIf(e -> (e.isSelected() && e.disconnect()));
     }
 
 }
