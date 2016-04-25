@@ -9,8 +9,8 @@
 
 
 - Grade criteria.
---- Använd paket.
---- Följ namngivningskonventioner.
+
+
 -- Ta bort död kod.
 -- Varje static-fält eller singelton behöver kommentar.
 -- Fel får inte ignoreras.
@@ -22,3 +22,8 @@
 -- Logga alla fel med java.util.logging
 -- Hårdkoda inte saker.
 -- "mnemonics" och keybindnings.
+
+
+--- exit on escape.
+--- Använd paket.
+--- Följ namngivningskonventioner.

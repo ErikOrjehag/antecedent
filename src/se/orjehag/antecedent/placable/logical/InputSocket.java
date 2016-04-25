@@ -5,7 +5,7 @@ package se.orjehag.antecedent.placable.logical;
  */
 public class InputSocket extends Socket {
 
-    private OutputSocket connectedTo;
+    private OutputSocket connectedTo = null;
 
     public InputSocket(Logical owner) {
         super(owner);

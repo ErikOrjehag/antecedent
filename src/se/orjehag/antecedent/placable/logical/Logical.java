@@ -67,7 +67,9 @@ public abstract class Logical extends Placeable {
         //noinspection SuspiciousMethodCalls
         assert inputs.contains(socket) || outputs.contains(socket);
 
+        //noinspection SuspiciousMethodCalls
         boolean isInput = inputs.contains(socket);
+        //noinspection SuspiciousMethodCalls
         int index = isInput ? inputs.indexOf(socket) : outputs.indexOf(socket);
         int len = isInput ? inputs.size() : outputs.size();
         int x = (width / 2 + 10) * (isInput ? -1 : 1);
@@ -101,6 +103,8 @@ public abstract class Logical extends Placeable {
         int len = sockets.size();
 
         for (int i = 0; i < len; i++) {
+            // This is not suspicious, we need to know if its an input or output.
+            //noinspection SuspiciousMethodCalls
             boolean isInput = inputs.contains(sockets.get(i));
             Point pos = relativeSocketPosition(sockets.get(i));
             g2d.drawLine(pos.x, pos.y, pos.x + 10 * (isInput ? 1 : -1), pos.y);

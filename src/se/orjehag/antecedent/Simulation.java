@@ -13,14 +13,15 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.CubicCurve2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by erik on 31/03/16.
  */
 public class Simulation implements Serializable
 {
-    public ArrayList<Placeable> placeables = new ArrayList<>();
-    public ArrayList<Logical> logicals = new ArrayList<>();
+    public List<Placeable> placeables = new ArrayList<>();
+    public List<Logical> logicals = new ArrayList<>();
     private InputSocket fromInputSocket = null;
     private OutputSocket fromOutputSocket = null;
     private Point mousePos = new Point();
@@ -46,7 +47,7 @@ public class Simulation implements Serializable
         for (Logical logical : logicals) {
             boolean shouldBreak = false;
             for (OutputSocket outputSocket : logical.outputs) {
-                if (outputSocket.contains(mousePos)) {
+                if (outputSocket.isNear(mousePos)) {
                     fromOutputSocket = outputSocket;
                     shouldBreak = true;
                     break;
@@ -56,7 +57,7 @@ public class Simulation implements Serializable
                 break;
             }
             for (InputSocket inputSocket : logical.inputs) {
-                if (inputSocket.contains(mousePos)) {
+                if (inputSocket.isNear(mousePos)) {
                     if (inputSocket.isConnected()) {
                         fromOutputSocket = inputSocket.getConnectedTo();
                         inputSocket.disconnect();
@@ -85,7 +86,7 @@ public class Simulation implements Serializable
             boolean shouldBreak = false;
             if (fromInputSocket != null) {
                 for (OutputSocket outputSocket : logical.outputs) {
-                    if (outputSocket.contains(mousePos)) {
+                    if (outputSocket.isNear(mousePos)) {
                         fromInputSocket.connectTo(outputSocket);
                         shouldBreak = true;
                         break;
@@ -96,7 +97,7 @@ public class Simulation implements Serializable
                 }
             } else if (fromOutputSocket != null) {
                 for (InputSocket inputSocket : logical.inputs) {
-                    if (inputSocket.contains(mousePos)) {
+                    if (inputSocket.isNear(mousePos)) {
                         inputSocket.connectTo(fromOutputSocket);
                         shouldBreak = true;
                         break;
@@ -160,8 +161,10 @@ public class Simulation implements Serializable
 
     private void drawWire(Graphics2D g2d, Point from, Point to, boolean high) {
         CubicCurve2D curve = new CubicCurve2D.Float();
-        curve.setCurve(from.x, from.y, (from.x + to.x) / 2,
-                from.y, (from.x + to.x) / 2, to.y, to.x, to.y);
+        // Magic number 2 means dividing in half.
+        //noinspection MagicNumber
+        curve.setCurve(from.x, from.y, (from.x + to.x) / 2.0f,
+                from.y, (from.x + to.x) / 2.0f, to.y, to.x, to.y);
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(3));
         g2d.draw(curve);

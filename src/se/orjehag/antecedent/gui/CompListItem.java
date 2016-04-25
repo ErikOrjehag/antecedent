@@ -10,17 +10,21 @@ import java.awt.geom.AffineTransform;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * Created by erik on 12/04/16.
- */
 public class CompListItem extends JComponent implements MouseListener, MouseMotionListener {
 
-    Dimension size = new Dimension(90, 80);
-    Placeable placeable;
-    JPanel dragPanel;
-    CompListDraggable draggable;
-    CompDropTarget dropTarget;
-    Class<? extends Placeable> placableClass;
+    public Dimension size = new Dimension(90, 80);
+    public Placeable placeable;
+    private JPanel dragPanel;
+    private CompDropTarget dropTarget;
+    private Class<? extends Placeable> placableClass;
+
+    // It is true that this variable may not be initialized
+    // but if that is the case we will handle it by catching
+    // the exception in the createPlacableInstance method and
+    // then shutdown the application gracefully.
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
+    private CompListDraggable draggable;
+
 
     public CompListItem(JPanel dragPanel, CompDropTarget dropTarget, Class<? extends Placeable> placableClass) {
         setPreferredSize(size);
@@ -34,7 +38,7 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
 
     private Placeable createPlacableInstance(int x, int y) {
         try {
-            return placableClass.getConstructor(new Class[] { int.class, int.class }).newInstance(x, y);
+            return placableClass.getConstructor(new Class<?>[] { int.class, int.class }).newInstance(x, y);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -92,4 +96,8 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
     @Override public void mouseClicked(final MouseEvent e) {}
     @Override public void mouseEntered(final MouseEvent e) {}
     @Override public void mouseExited(final MouseEvent e) {}
+
+    @Override public Dimension getSize() {
+        return size;
+    }
 }

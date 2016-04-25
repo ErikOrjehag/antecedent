@@ -1,7 +1,6 @@
 package se.orjehag.antecedent.gui;
 
 import java.awt.*;
-import java.awt.Point;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import javax.swing.*;
@@ -40,7 +39,7 @@ public class CompListDraggable
         Container parent = item.getParent();
 
         // Convert the local location of the CompListItem to the global location based on its parent.
-        Point pp = SwingUtilities.convertPoint(parent, p, CompListDraggable.this);
+        Point pp = SwingUtilities.convertPoint(parent, p, this);
 
         // TODO: Make this be a point.
         myX = (int) pp.getX();

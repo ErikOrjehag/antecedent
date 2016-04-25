@@ -2,7 +2,6 @@ package se.orjehag.antecedent.placable.logical.input;
 
 import se.orjehag.antecedent.placable.logical.Logical;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**

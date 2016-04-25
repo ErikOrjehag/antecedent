@@ -13,7 +13,7 @@ public class Lamp extends Logical {
     }
 
     @Override
-    public boolean[] func(boolean[] inVals) {
+    public boolean[] func(boolean[] in) {
         return new boolean[0];
     }
 

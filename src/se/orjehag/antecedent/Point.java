@@ -1,9 +1,11 @@
 package se.orjehag.antecedent;
 
+import java.io.Serializable;
+
 /**
  * Created by erik on 05/04/16.
  */
-public class Point implements java.io.Serializable {
+public class Point implements Serializable {
 
     public int x, y;
 
@@ -20,16 +22,6 @@ public class Point implements java.io.Serializable {
     public void set(Point point) {
         x = point.x;
         y = point.y;
-    }
-
-    public void add(Point point) {
-        x += point.x;
-        y += point.y;
-    }
-
-    public void subtract(Point point) {
-        x -= point.x;
-        y -= point.y;
     }
 
     public Point plus(Point point) {

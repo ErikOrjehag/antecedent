@@ -16,7 +16,7 @@ public class XnorGate extends Logical {
     @Override
     public boolean[] func(boolean[] in) {
         assert in.length == 2;
-        return new boolean[]{ !(in[0] ^ in[1]) };
+        return new boolean[]{ in[0] == in[1] };
     }
 
     @Override protected String getLabel() {

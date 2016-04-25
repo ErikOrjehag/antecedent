@@ -5,9 +5,7 @@ import se.orjehag.antecedent.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import se.orjehag.antecedent.Point;
 import se.orjehag.antecedent.placable.logical.Logical;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -15,25 +13,26 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 
-/**
- * Created by erik on 31/03/16.
- */
+// I still want this class to be abstract to prevent someone
+// from creating an instance of this class because it does not
+// make any sense.
+@SuppressWarnings("AbstractClassWithoutAbstractMethods")
 public abstract class Placeable implements Serializable
 {
     protected Point position;
     protected int width, height;
     private boolean isDragging = false;
-    private Point mouseOffset;
-    private boolean isSelected = false;
+    private Point mouseOffset = null;
+    private boolean selected = false;
 
-    public Placeable(int x, int y, int width, int height) {
+    protected Placeable(int x, int y, int width, int height) {
         position = new Point(x, y);
         this.width = width;
         this.height = height;
     }
 
     public void draw(Graphics2D g2d) {
-        if (isSelected) {
+        if (selected) {
             AffineTransform oldTransform = g2d.getTransform();
             Stroke oldStroke = g2d.getStroke();
 
@@ -52,11 +51,11 @@ public abstract class Placeable implements Serializable
     }
 
     public void mousePressed(MouseEvent e) {
-        isSelected = false;
+        selected = false;
         if (Math.abs(e.getX() - position.x) < width / 2 && Math.abs(e.getY() - position.y) < height / 2) {
             isDragging = true;
             mouseOffset = position.minus(new Point(e.getX(), e.getY()));
-            isSelected = true;
+            selected = true;
         }
     }
 
@@ -76,6 +75,6 @@ public abstract class Placeable implements Serializable
     }
 
     public boolean isSelected() {
-        return isSelected;
+        return selected;
     }
 }

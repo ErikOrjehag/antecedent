@@ -5,40 +5,19 @@ import se.orjehag.antecedent.placable.Placeable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.dnd.DropTargetListener;
-import java.io.*;
 
-/**
- * Created by erik on 20/03/16.
- */
 public class SimComponent extends JComponent implements MouseListener, MouseMotionListener, CompDropTarget {
 
-    private final int GRID_SIZE = 20;
     private Simulation simulation = new Simulation();
     private final static Color BACKGROUND_COLOR = new Color(220, 220, 220);
     private final static Color GRID_COLOR = new Color(160, 160, 160);
+    private final static int GRID_SIZE = 20;
 
     public SimComponent() {
-
         addMouseListener(this);
         addMouseMotionListener(this);
-
-        Action removeSelected = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                simulation.removeSelected();
-                repaint();
-            }
-        };
-
-        getInputMap().put(KeyStroke.getKeyStroke("DELETE"), "removeSelected");
-        getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "removeSelected");
-        getActionMap().put("removeSelected", removeSelected);
     }
 
     @Override public Dimension getPreferredSize() {
@@ -72,6 +51,7 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
 
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
+        repaint();
     }
 
     public Simulation getSimulation() {
@@ -81,25 +61,25 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
     @Override
     public void mouseDragged(MouseEvent e) {
         simulation.mouseMoved(e);
-        repaint(); // TODO
+        repaint(); // TODO: Only need repaint if something was moved.
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         simulation.mouseMoved(e);
-        repaint(); // TODO
+        repaint(); // TODO: Only need repaint if something was moved.
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         simulation.mousePressed(e);
-        repaint(); // TODO
+        repaint(); // TODO: Only needs repaint if something was pressed.
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         simulation.mouseReleased(e);
-        repaint(); // TODO
+        repaint(); // TODO: Only needs repaint if something was affected.
     }
 
     @Override

@@ -7,10 +7,20 @@ import se.orjehag.antecedent.placable.logical.gate.XOrGate;
 import se.orjehag.antecedent.placable.logical.input.Switch;
 import se.orjehag.antecedent.placable.logical.output.Lamp;
 
-public class ExamplesFactory
+/**
+ * A lot of example simulations made by hand to
+ * using the public API of the simulation class.
+ * I made these examples to demonstrate the
+ * functionality implemented. This factory
+ * is used when an example is picked from the
+ * menu dropdown list.
+ */
+public final class ExamplesFactory
 {
     private ExamplesFactory() {}
 
+    // X and Y positions of logical components are not magic numbers.
+    @SuppressWarnings("MagicNumber")
     public static Simulation fullAdder() {
 	Simulation simulation = new Simulation();
 

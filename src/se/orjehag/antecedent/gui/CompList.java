@@ -22,13 +22,14 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Color;
 
-/**
- * Created by erik on 12/04/16.
- */
 public class CompList extends JScrollPane {
 
-    JPanel panel;
+    private JPanel panel;
+    private static final Color TITLE_BACKGROUND_COLOR = new Color(200, 200, 200);
 
+    // I got this warning because this methods lists all the classes of the placable components.
+    // It's meant to be a list so there is not much I can do about it.
+    @SuppressWarnings("OverlyCoupledMethod")
     public CompList(JPanel dragPanel, SimComponent dropTarget) {
         super(new JPanel(), VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         panel = (JPanel) getViewport().getView();
@@ -72,9 +73,7 @@ public class CompList extends JScrollPane {
     private void addTitle(String title) {
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         labelPanel.setOpaque(true);
-        // Magic numbers: 200, 200, 200 means gray.
-        //noinspection MagicNumber
-        labelPanel.setBackground(new Color(200, 200, 200));
+        labelPanel.setBackground(TITLE_BACKGROUND_COLOR);
         labelPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
         JLabel label = new JLabel(title);
         labelPanel.add(label);

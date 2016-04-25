@@ -10,6 +10,9 @@ public class Text extends Placeable {
     private String text;
 
     public Text(int x, int y) {
+        // 80 is the default width and 20 is the
+        // default height of a placable Text object.
+        //noinspection MagicNumber
         super(x, y, 80, 20);
         text = "Text";
     }

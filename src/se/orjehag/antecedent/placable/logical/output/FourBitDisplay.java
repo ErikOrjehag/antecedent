@@ -21,8 +21,7 @@ public class FourBitDisplay extends Logical {
     }
 
     @Override protected String getLabel() {
-        int n =
-            1 * (inputs.get(0).getValue() ? 1 : 0) +
+        int n = (inputs.get(0).getValue() ? 1 : 0) +
             2 * (inputs.get(1).getValue() ? 1 : 0) +
             4 * (inputs.get(2).getValue() ? 1 : 0) +
             8 * (inputs.get(3).getValue() ? 1 : 0);
