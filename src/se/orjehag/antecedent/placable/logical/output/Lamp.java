@@ -19,6 +19,6 @@ public class Lamp extends Logical {
 
     @Override protected String getLabel() {
         boolean isOn = inputs.get(0).getValue();
-        return isOn ? "ON" : "OFF";
+        return isOn ? "1" : "0";
     }
 }

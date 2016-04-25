@@ -61,25 +61,25 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
     @Override
     public void mouseDragged(MouseEvent e) {
         simulation.mouseMoved(e);
-        repaint(); // TODO: Only need repaint if something was moved.
+        repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         simulation.mouseMoved(e);
-        repaint(); // TODO: Only need repaint if something was moved.
+        repaint();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         simulation.mousePressed(e);
-        repaint(); // TODO: Only needs repaint if something was pressed.
+        repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         simulation.mouseReleased(e);
-        repaint(); // TODO: Only needs repaint if something was affected.
+        repaint();
     }
 
     @Override

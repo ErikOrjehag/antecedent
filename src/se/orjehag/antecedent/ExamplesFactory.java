@@ -24,25 +24,28 @@ public final class ExamplesFactory
     public static Simulation fullAdder() {
 	Simulation simulation = new Simulation();
 
-	Text cinLabel = new Text(100, 50);
+	Text cinLabel = new Text(100, 65);
+	cinLabel.setText("Carry in:");
 	simulation.add(cinLabel);
 
 	Switch cin = new Switch(100, 100);
 	simulation.add(cin);
 
-	Text iaLabel = new Text(100, 150);
+	Text iaLabel = new Text(100, 165);
+	iaLabel.setText("Input A:");
 	simulation.add(iaLabel);
 
 	Switch ia = new Switch(100, 200);
 	simulation.add(ia);
 
-	Text ibLabel = new Text(100, 250);
+	Text ibLabel = new Text(100, 265);
+	ibLabel.setText("Input B:");
 	simulation.add(ibLabel);
 
 	Switch ib = new Switch(100, 300);
 	simulation.add(ib);
 
-	XOrGate xor1 = new XOrGate(300, 200);
+	XOrGate xor1 = new XOrGate(300, 240);
 	simulation.add(xor1);
 	xor1.inputs.get(0).connectTo(ia.outputs.get(0));
 	xor1.inputs.get(1).connectTo(ib.outputs.get(0));
@@ -52,26 +55,34 @@ public final class ExamplesFactory
 	and1.inputs.get(0).connectTo(ia.outputs.get(0));
 	and1.inputs.get(1).connectTo(ib.outputs.get(0));
 
-	XOrGate xor2 = new XOrGate(400, 200);
+	XOrGate xor2 = new XOrGate(450, 100);
 	simulation.add(xor2);
 	xor2.inputs.get(0).connectTo(cin.outputs.get(0));
 	xor2.inputs.get(1).connectTo(xor1.outputs.get(0));
 
-	AndGate and2 = new AndGate(400, 300);
+	AndGate and2 = new AndGate(450, 160);
 	simulation.add(and2);
 	and2.inputs.get(0).connectTo(cin.outputs.get(0));
 	and2.inputs.get(1).connectTo(xor1.outputs.get(0));
 
-	OrGate or = new OrGate(500, 300);
+	OrGate or = new OrGate(550, 250);
 	simulation.add(or);
 	or.inputs.get(0).connectTo(and2.outputs.get(0));
 	or.inputs.get(1).connectTo(and1.outputs.get(0));
 
-	Lamp sum = new Lamp(600, 200);
+	Text sumLabel = new Text(700, 65);
+	sumLabel.setText("Sum:");
+	simulation.add(sumLabel);
+
+	Lamp sum = new Lamp(700, 100);
 	simulation.add(sum);
 	sum.inputs.get(0).connectTo(xor2.outputs.get(0));
 
-	Lamp cout = new Lamp(600, 300);
+	Text coutLabel = new Text(700, 165);
+	coutLabel.setText("Carry out:");
+	simulation.add(coutLabel);
+
+	Lamp cout = new Lamp(700, 200);
 	simulation.add(cout);
 	cout.inputs.get(0).connectTo(or.outputs.get(0));
 

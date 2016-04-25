@@ -2,9 +2,6 @@ package se.orjehag.antecedent.placable;
 
 import java.awt.*;
 
-/**
- * Created by erik on 31/03/16.
- */
 public class Text extends Placeable {
 
     private String text;
@@ -15,6 +12,10 @@ public class Text extends Placeable {
         //noinspection MagicNumber
         super(x, y, 80, 20);
         text = "Text";
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override

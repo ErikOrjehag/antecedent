@@ -1,29 +1,24 @@
 
-- Code cleanup.
-- Images.
-- Flip flops.
-- Examples (class).
-- Edit properties on right click (text, image, maybe inputs).
-- Clock input.
-- Listeners for step and not step everywhere.
+Funktioner:
+===========
+-- Bilder kan dras ut.
+-- Ändra egenskaper hos placable med högerklick (text, bild, sockets).
+-- Steppa bara när det behövs.
+-- Lägg till klock-input.
+-- Lägg till flipflops (D, JK, T).
+-- Lägg till fler exempel.
+-- Varna om en paradoxal krets kopplas.
 
-
-- Grade criteria.
-
-
--- Ta bort död kod.
--- Varje static-fält eller singelton behöver kommentar.
+Betyg:
+===========
 -- Fel får inte ignoreras.
--- Undvik upprepning.
--- Uppräkningsbara värden ska vara enums.
 -- Exceptions ska hanteras på rätt plats och återhämta sig.
--- Resurser ska användas.
 -- Varje klass ska kommenteras (javadoc)
 -- Logga alla fel med java.util.logging
 -- Hårdkoda inte saker.
--- "mnemonics" och keybindnings.
 
-
---- exit on escape.
---- Använd paket.
---- Följ namngivningskonventioner.
+OK:
+-- Använd paket.
+-- Följ namngivningskonventioner.
+-- Mnemonics och keybindnings.
+-- Resurser ska användas.

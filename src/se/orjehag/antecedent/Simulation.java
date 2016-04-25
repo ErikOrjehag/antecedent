@@ -27,15 +27,16 @@ public class Simulation implements Serializable
     private Point mousePos = new Point();
     private static final Color LOGICAL_HIGH_COLOR = new Color(29, 123, 255);
     private static final Color LOGICAL_LOW_COLOR = Color.WHITE;
+    // Needed to propagate changes, 2 works fine but I use 3 for
+    // extra safety. Might want to increase to 4 in the future.
+    private static final int ITERATIONS_PER_STEP = 3;
 
     public Simulation() {
         step();
     }
 
-    public void step() {
-        System.out.println("step");
-
-        for (int n = 0; n < 2; n++) {
+    private void step() {
+        for (int n = 0; n < ITERATIONS_PER_STEP; n++) {
             for (int i = 0; i < logicals.size(); i++) {
                 logicals.get(i).step();
             }
@@ -77,7 +78,7 @@ public class Simulation implements Serializable
             placable.mousePressed(e);
         }
 
-        step(); // TODO
+        step();
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -116,7 +117,7 @@ public class Simulation implements Serializable
             placable.mouseReleased(e);
         }
 
-        step(); // TODO
+        step();
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -178,7 +179,14 @@ public class Simulation implements Serializable
     }
 
     public void removeSelected() {
+        // I did not want to use regular for loops because I got into
+        // trouble when I tried to iterate over the same list that I'm
+        // removing items from. I still had problems when I used Iterable
+        // and getNext() but this removeIf() method has solved the problem.
         placeables.removeIf(e -> (e.isSelected()));
+        // This is a little hacky. The disconnect method will only be
+        // called if isSelected() evaluates to true. Disconnect always
+        // returns true.
         logicals.removeIf(e -> (e.isSelected() && e.disconnect()));
     }
 }

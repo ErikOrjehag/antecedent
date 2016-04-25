@@ -14,8 +14,8 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
 
     public Dimension size = new Dimension(90, 80);
     public Placeable placeable;
-    private JPanel dragPanel;
     private CompDropTarget dropTarget;
+    private JPanel dragPanel;
     private Class<? extends Placeable> placableClass;
 
     // It is true that this variable may not be initialized
@@ -61,7 +61,6 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
 
 
     @Override public void mousePressed(final MouseEvent e) {
-        System.out.println("Grabbed item: " + this);
         draggable = new CompListDraggable(this);
         dragPanel.add(draggable);
         draggable.mousePressed(e);
@@ -70,26 +69,24 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
     @Override
     public void mouseDragged(MouseEvent e) {
         draggable.mouseDragged(e);
-        Rectangle area = dropTarget.getCompDropArea();
-        // System.out.println("x: " + area.getX() + ", y: " + area.getY() + ", w: " + area.getWidth() + ", h: " + area.getHeight());
-        Point point = draggable.getLocation();
-
-        if (area.contains(point)) {
-            System.out.println("Over!");
-        }
     }
 
     @Override public void mouseReleased(final MouseEvent e) {
-        Rectangle area = dropTarget.getCompDropArea();
-        Point point = draggable.getLocation();
-
-        if (area.contains(point)) {
-            System.out.println("Drop!");
-            dropTarget.compDrop(createPlacableInstance((int) (point.getX() + size.width / 2 - dropTarget.getCompDropArea().getX()), (int) (point.getY() + size.height / 2 - dropTarget.getCompDropArea().getY())));
+        if (isOverTargetArea()) {
+            Point point = draggable.getLocation();
+            int x = (int) (point.getX() + size.width / 2 - dropTarget.getCompDropArea().getX());
+            int y = (int) (point.getY() + size.height / 2 - dropTarget.getCompDropArea().getY());
+            dropTarget.compDrop(createPlacableInstance(x, y));
         }
-
         dragPanel.remove(draggable);
         dragPanel.repaint();
+    }
+
+    public boolean isOverTargetArea() {
+        Rectangle area = dropTarget.getCompDropArea();
+        Point point = draggable.getLocation();
+        point.translate(draggable.getWidth() / 2, draggable.getHeight() / 2);
+        return area.contains(point);
     }
 
     @Override public void mouseMoved(MouseEvent e) {}
