@@ -10,9 +10,7 @@ public class Text extends Placeable {
     private String text;
 
     public Text(int x, int y) {
-        super(x, y);
-        width = 80;
-        height = 20;
+        super(x, y, 80, 20);
         text = "Text";
     }
 
@@ -20,6 +18,7 @@ public class Text extends Placeable {
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
         g2d.setColor(Color.BLACK);
-        g2d.drawString(text, position.x, position.y);
+        int stringWidth = g2d.getFontMetrics().stringWidth(text);
+        g2d.drawString(text, position.x - stringWidth / 2, position.y);
     }
 }

@@ -2,11 +2,13 @@ package se.orjehag.antecedent.placable.logical;
 
 import se.orjehag.antecedent.Point;
 
+import java.io.Serializable;
+
 /**
  * Created by erik on 31/03/16.
  */
-public abstract class Socket implements java.io.Serializable {
-
+public abstract class Socket implements Serializable
+{
     private Logical owner;
 
     public Socket(Logical owner) {

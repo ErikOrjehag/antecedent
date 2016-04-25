@@ -35,10 +35,7 @@ public class Switch extends Logical {
         super.mouseReleased(e);
     }
 
-    @Override
-    public void draw(Graphics2D g2d) {
-        super.draw(g2d);
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("SW: " + (isOn ? "1" : "0"), position.x - 20, position.y);
+    @Override protected String getLabel() {
+        return "SW: " + (isOn ? "1" : "0");
     }
 }

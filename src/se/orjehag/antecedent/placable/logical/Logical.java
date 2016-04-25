@@ -1,23 +1,30 @@
 package se.orjehag.antecedent.placable.logical;
 
-import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import se.orjehag.antecedent.Point;
 import se.orjehag.antecedent.placable.Placeable;
+
+import java.util.List;
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 /**
  * Created by erik on 31/03/16.
  */
 public abstract class Logical extends Placeable {
 
-    public ArrayList<InputSocket> inputs = new ArrayList<>();
-    public ArrayList<OutputSocket> outputs = new ArrayList<>();
+    public List<InputSocket> inputs = new ArrayList<>();
+    public List<OutputSocket> outputs = new ArrayList<>();
 
-    public Logical(int x, int y) {
-        super(x, y);
-        width = 50;
-        height = 50;
+    protected Logical(int x, int y, int width, int height) {
+        // Magic number 50 is default height and width.
+        //noinspection MagicNumber
+        super(x, y, (width == -1 ? 50 : width), (height == -1 ? 50 : height));
+    }
+
+    protected Logical(int x, int y) {
+        this(x, y, -1, -1);
     }
 
     public abstract boolean[] func(boolean[] in);
@@ -52,13 +59,22 @@ public abstract class Logical extends Placeable {
     }
 
     public Point relativeSocketPosition(Socket socket) {
+        // This is not suspicious and not a bug. The method is used
+        // to get the position of a socket relative to its Logical
+        // owner. This assertion was added because you are not allowed
+        // to call this method on an instance of Logical that does not
+        // own the socket.
+        //noinspection SuspiciousMethodCalls
         assert inputs.contains(socket) || outputs.contains(socket);
 
         boolean isInput = inputs.contains(socket);
         int index = isInput ? inputs.indexOf(socket) : outputs.indexOf(socket);
         int len = isInput ? inputs.size() : outputs.size();
         int x = (width / 2 + 10) * (isInput ? -1 : 1);
-        int y = (int)(index * 15 + (len - 1) / 2f * -15);
+        final int spacing = 15;
+        // Magic number 2 means dividing in half.
+        //noinspection MagicNumber
+        int y = (int)(index * spacing + (len - 1) / 2.0f * -spacing);
         return new Point(x, y);
     }
 
@@ -73,26 +89,28 @@ public abstract class Logical extends Placeable {
         g2d.setColor(Color.BLACK);
         g2d.drawRect(-width / 2, -height / 2, width, height);
 
-        int inLen = inputs.size();
+        String label = getLabel();
+        int labelWidth = g2d.getFontMetrics().stringWidth(label);
+        g2d.drawString(getLabel(), -labelWidth/2, 0);
 
-        for (int i = 0; i < inLen; i++) {
-            int x = -width / 2;
-            int y = (int)(i * 15 + (inLen - 1) / 2f * -15);
-            g2d.drawLine(x, y, x - 10, y);
-            g2d.fillOval(x - 15, y - 5, 10, 10);
-        }
+        // Concatenate inputs and outputs to reduce code
+        // duplication during drawing because they look the same.
+        List<Socket> sockets = new ArrayList<>();
+        sockets.addAll(inputs);
+        sockets.addAll(outputs);
+        int len = sockets.size();
 
-        int outLen = outputs.size();
-
-        for (int i = 0; i < outLen; i++) {
-            int x = width / 2;
-            int y = (int)(i * 20 + (outLen - 1) / 2f * -20);
-            g2d.drawLine(x, y, x + 10, y);
-            g2d.fillOval(x + 5, y - 5, 10, 10);
+        for (int i = 0; i < len; i++) {
+            boolean isInput = inputs.contains(sockets.get(i));
+            Point pos = relativeSocketPosition(sockets.get(i));
+            g2d.drawLine(pos.x, pos.y, pos.x + 10 * (isInput ? 1 : -1), pos.y);
+            g2d.fillOval(pos.x - 5, pos.y - 5, 5 * 2, 5 * 2);
         }
 
         g2d.setTransform(old);
     }
+
+    protected abstract String getLabel();
 
     public boolean disconnect() {
         inputs.forEach(InputSocket::disconnect);
@@ -101,7 +119,7 @@ public abstract class Logical extends Placeable {
     }
 
     @Override
-    public void addTo(ArrayList<Placeable> placeables, ArrayList<Logical> logicals) {
+    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
         placeables.add(this);
         logicals.add(this);
     }

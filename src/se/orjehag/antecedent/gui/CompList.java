@@ -2,8 +2,6 @@ package se.orjehag.antecedent.gui;
 
 import se.orjehag.antecedent.SimComponent;
 import se.orjehag.antecedent.placable.Text;
-import se.orjehag.antecedent.placable.logical.flipflop.Dflipflop;
-import se.orjehag.antecedent.placable.logical.flipflop.Tflipflop;
 import se.orjehag.antecedent.placable.logical.gate.AndGate;
 import se.orjehag.antecedent.placable.logical.gate.NandGate;
 import se.orjehag.antecedent.placable.logical.gate.NorGate;
@@ -64,13 +62,6 @@ public class CompList extends JScrollPane {
         outputs.add(new CompListItem(dragPanel, dropTarget, Lamp.class));
         panel.add(outputs);
 
-        addTitle("Flip-flops");
-        JPanel flops = new JPanel();
-        flops.setLayout(new GridLayout(1, 2));
-        flops.add(new CompListItem(dragPanel, dropTarget, Dflipflop.class));
-        flops.add(new CompListItem(dragPanel, dropTarget, Tflipflop.class));
-        panel.add(flops);
-
         addTitle("Others");
         JPanel others = new JPanel();
         others.setLayout(new GridLayout(1, 2));
@@ -81,6 +72,8 @@ public class CompList extends JScrollPane {
     private void addTitle(String title) {
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         labelPanel.setOpaque(true);
+        // Magic numbers: 200, 200, 200 means gray.
+        //noinspection MagicNumber
         labelPanel.setBackground(new Color(200, 200, 200));
         labelPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
         JLabel label = new JLabel(title);

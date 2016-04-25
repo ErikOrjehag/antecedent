@@ -2,8 +2,6 @@ package se.orjehag.antecedent.placable.logical.output;
 
 import se.orjehag.antecedent.placable.logical.Logical;
 
-import java.awt.*;
-
 /**
  * Created by erik on 05/04/16.
  */
@@ -19,12 +17,8 @@ public class Lamp extends Logical {
         return new boolean[0];
     }
 
-    @Override
-    public void draw(Graphics2D g2d) {
-        super.draw(g2d);
+    @Override protected String getLabel() {
         boolean isOn = inputs.get(0).getValue();
-        String onOff = isOn ? "ON" : "OFF";
-        g2d.setColor(Color.BLACK);
-        g2d.drawString(onOff, position.x, position.y);
+        return isOn ? "ON" : "OFF";
     }
 }

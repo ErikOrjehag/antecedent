@@ -20,6 +20,8 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
 
     private final int GRID_SIZE = 20;
     private Simulation simulation = new Simulation();
+    private final static Color BACKGROUND_COLOR = new Color(220, 220, 220);
+    private final static Color GRID_COLOR = new Color(160, 160, 160);
 
     public SimComponent() {
 
@@ -47,7 +49,7 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         super.paintComponent(g);
         final Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setColor(new Color(220, 220, 220));
+        g2d.setColor(BACKGROUND_COLOR);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         drawGrid(g2d);
@@ -57,7 +59,7 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         BufferedImage gridImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        int color = new Color(160, 160, 160).getRGB();
+        int color = GRID_COLOR.getRGB();
         for (int x = 0; x < getWidth(); x += GRID_SIZE) {
             for (int y = 0; y < getHeight(); y += GRID_SIZE) {
                 gridImage.setRGB(x, y, color);

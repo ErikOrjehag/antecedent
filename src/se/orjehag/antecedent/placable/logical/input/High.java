@@ -2,8 +2,6 @@ package se.orjehag.antecedent.placable.logical.input;
 
 import se.orjehag.antecedent.placable.logical.Logical;
 
-import java.awt.*;
-
 /**
  * Created by erik on 05/04/16.
  */
@@ -19,10 +17,7 @@ public class High extends Logical {
         return new boolean[]{ true };
     }
 
-    @Override
-    public void draw(Graphics2D g2d) {
-        super.draw(g2d);
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("1", position.x, position.y);
+    @Override protected String getLabel() {
+        return "1";
     }
 }

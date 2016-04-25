@@ -2,27 +2,34 @@ package se.orjehag.antecedent.placable;
 
 import se.orjehag.antecedent.*;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import se.orjehag.antecedent.Point;
 import se.orjehag.antecedent.placable.logical.Logical;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.BasicStroke;
+import java.awt.Color;
+
 
 /**
  * Created by erik on 31/03/16.
  */
-public abstract class Placeable implements java.io.Serializable {
-
-    protected se.orjehag.antecedent.Point position;
-    private ArrayList<DragListener> dragListeners = new ArrayList<>();
+public abstract class Placeable implements Serializable
+{
+    protected Point position;
     protected int width, height;
     private boolean isDragging = false;
-    private se.orjehag.antecedent.Point mouseOffset;
+    private Point mouseOffset;
     private boolean isSelected = false;
 
-    public Placeable(int x, int y) {
+    public Placeable(int x, int y, int width, int height) {
         position = new Point(x, y);
+        this.width = width;
+        this.height = height;
     }
 
     public void draw(Graphics2D g2d) {
@@ -40,15 +47,7 @@ public abstract class Placeable implements java.io.Serializable {
         }
     }
 
-    public void addDragListener(DragListener listener) {
-        dragListeners.add(listener);
-    }
-
-    public void removeDragListener(DragListener listener) {
-        dragListeners.remove(listener);
-    }
-
-    public se.orjehag.antecedent.Point getPosition() {
+    public Point getPosition() {
         return position;
     }
 
@@ -67,12 +66,12 @@ public abstract class Placeable implements java.io.Serializable {
 
     public void mouseMoved(MouseEvent e) {
         if (isDragging) {
-            se.orjehag.antecedent.Point mousePosition = new Point(e.getX(), e.getY());
+            Point mousePosition = new Point(e.getX(), e.getY());
             position.set(mousePosition.plus(mouseOffset));
         }
     }
 
-    public void addTo(ArrayList<Placeable> placeables, ArrayList<Logical> logicals) {
+    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
         placeables.add(this);
     }
 

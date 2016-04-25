@@ -43,6 +43,7 @@ public class SimFrame extends JFrame {
         back.setLayout(new BorderLayout());
 
         simComponent = new SimComponent();
+        simComponent.setSimulation(ExamplesFactory.fullAdder());
         back.add(simComponent, BorderLayout.CENTER);
 
         back.add(new CompList(front, simComponent), BorderLayout.WEST);

@@ -1,9 +1,24 @@
 
 - Code cleanup.
-- Grade criteria.
 - Images.
 - Flip flops.
 - Examples (class).
 - Edit properties on right click (text, image, maybe inputs).
 - Clock input.
 - Listeners for step and not step everywhere.
+
+
+- Grade criteria.
+--- Använd paket.
+--- Följ namngivningskonventioner.
+-- Ta bort död kod.
+-- Varje static-fält eller singelton behöver kommentar.
+-- Fel får inte ignoreras.
+-- Undvik upprepning.
+-- Uppräkningsbara värden ska vara enums.
+-- Exceptions ska hanteras på rätt plats och återhämta sig.
+-- Resurser ska användas.
+-- Varje klass ska kommenteras (javadoc)
+-- Logga alla fel med java.util.logging
+-- Hårdkoda inte saker.
+-- "mnemonics" och keybindnings.

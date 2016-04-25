@@ -2,8 +2,6 @@ package se.orjehag.antecedent.placable.logical.gate;
 
 import se.orjehag.antecedent.placable.logical.Logical;
 
-import java.awt.*;
-
 /**
  * Created by erik on 06/04/16.
  */
@@ -21,10 +19,7 @@ public class NotGate extends Logical {
         return new boolean[]{ !in[0] };
     }
 
-    @Override
-    public void draw(Graphics2D g2d) {
-        super.draw(g2d);
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("NOT", position.x - 10, position.y);
+    @Override protected String getLabel() {
+        return "NOT";
     }
 }
