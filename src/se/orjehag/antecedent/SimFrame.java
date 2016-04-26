@@ -45,7 +45,7 @@ public class SimFrame extends JFrame {
         back.setLayout(new BorderLayout());
 
         simComponent = new SimComponent();
-        simComponent.setSimulation(ExamplesFactory.fullAdder());
+        simComponent.setSimulation(ExamplesFactory.dFlipFlop());
         back.add(simComponent, BorderLayout.CENTER);
 
         back.add(new CompList(front, simComponent), BorderLayout.WEST);
@@ -84,11 +84,10 @@ public class SimFrame extends JFrame {
 
         final JMenu edit = new JMenu("Edit");
         menuBar.add(edit);
-        final JMenuItem remove = new JMenuItem("Remove selected");
-        remove.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
-        remove.addActionListener(this::removeCallback);
-        edit.add(remove);
-
+        final JMenuItem removeSelected = new JMenuItem("Remove selected");
+        removeSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        removeSelected.addActionListener(this::removeSelectedCallback);
+        edit.add(removeSelected);
         // Additional key binding to remove placable, for convenience.
         getRootPane().getInputMap().put(KeyStroke.getKeyStroke("DELETE"), "removeSelected");
         getRootPane().getActionMap().put("removeSelected", new AbstractAction() {
@@ -97,6 +96,14 @@ public class SimFrame extends JFrame {
                 removeSelected();
             }
         });
+        final JMenuItem removeAll = new JMenuItem("Remove all");
+        removeAll.addActionListener(new AbstractAction()
+        {
+            @Override public void actionPerformed(final ActionEvent e) {
+                simComponent.setSimulation(new Simulation());
+            }
+        });
+        edit.add(removeAll);
 
         final JMenu examples = new JMenu("Examples");
         menuBar.add(examples);
@@ -108,6 +115,14 @@ public class SimFrame extends JFrame {
             }
         });
         examples.add(fullAdder);
+        final JMenuItem dflipflop = new JMenuItem("D flipflop");
+        dflipflop.addActionListener(new AbstractAction()
+        {
+            @Override public void actionPerformed(final ActionEvent e) {
+                simComponent.setSimulation(ExamplesFactory.dFlipFlop());
+            }
+        });
+        examples.add(dflipflop);
     }
 
     // Still needs the parameter even though it's never used
@@ -165,7 +180,7 @@ public class SimFrame extends JFrame {
     // Still needs the parameter even though it's never used
     // in order to match the correct method signature.
     @SuppressWarnings("UnusedParameters")
-    private void removeCallback(final ActionEvent actionEvent) {
+    private void removeSelectedCallback(final ActionEvent actionEvent) {
         removeSelected();
     }
 

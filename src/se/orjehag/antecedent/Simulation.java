@@ -32,10 +32,10 @@ public class Simulation implements Serializable
     private static final int ITERATIONS_PER_STEP = 3;
 
     public Simulation() {
-        step();
+
     }
 
-    private void step() {
+    public void step() {
         for (int n = 0; n < ITERATIONS_PER_STEP; n++) {
             for (int i = 0; i < logicals.size(); i++) {
                 logicals.get(i).step();
