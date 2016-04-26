@@ -2,6 +2,9 @@ package se.orjehag.antecedent.placable;
 
 import java.awt.*;
 
+/**
+ * Used as comments in the circuit.
+ */
 public class Text extends Placeable {
 
     private String text;

@@ -3,7 +3,7 @@ package se.orjehag.antecedent.placable.logical.output;
 import se.orjehag.antecedent.placable.logical.Logical;
 
 /**
- * Created by erik on 06/04/16.
+ * Displays a four bit number (0-15) based on the 4 input signals.
  */
 public class FourBitDisplay extends Logical {
 

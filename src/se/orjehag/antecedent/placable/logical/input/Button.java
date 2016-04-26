@@ -1,11 +1,10 @@
 package se.orjehag.antecedent.placable.logical.input;
 
+import se.orjehag.antecedent.Vec2;
 import se.orjehag.antecedent.placable.logical.Logical;
 
-import java.awt.event.MouseEvent;
-
 /**
- * Created by erik on 06/04/16.
+ * Momentary push button.
  */
 public class Button extends Logical {
 
@@ -22,16 +21,16 @@ public class Button extends Logical {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        super.mousePressed(e);
-        if (Math.abs(e.getX() - position.x) < width / 2 && Math.abs(e.getY() - position.y) < width / 2) {
+    public void mousePressed(Vec2 mousePos) {
+        super.mousePressed(mousePos);
+        if (Math.abs(mousePos.x - position.x) < width / 2 && Math.abs(mousePos.y - position.y) < width / 2) {
             isOn = true;
         }
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        super.mouseReleased(e);
+    public void mouseReleased(Vec2 mousePos) {
+        super.mouseReleased(mousePos);
         isOn = false;
     }
 

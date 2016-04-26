@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by erik on 05/04/16.
+ * The CoutputScoket stores signal state in "value".
+ * It has a list to the inputs it's connected to in
+ * order to ask the inputs to remove the reference
+ * to this output when it wants to disconnect.
+ *
+ * One output can be connected to multiple inputs.
  */
 public class OutputSocket extends Socket {
 

@@ -3,7 +3,7 @@ package se.orjehag.antecedent.placable.logical.gate;
 import se.orjehag.antecedent.placable.logical.Logical;
 
 /**
- * Created by erik on 31/03/16.
+ * OR gate.
  */
 public class OrGate extends Logical {
 

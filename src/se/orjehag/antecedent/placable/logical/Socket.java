@@ -1,6 +1,6 @@
 package se.orjehag.antecedent.placable.logical;
 
-import se.orjehag.antecedent.Point;
+import se.orjehag.antecedent.Vec2;
 
 import java.io.Serializable;
 
@@ -41,7 +41,7 @@ public abstract class Socket implements Serializable
         this.owner = owner;
     }
 
-    public Point getPosition() {
+    public Vec2 getPosition() {
         return owner.getPosition().plus(owner.relativeSocketPosition(this));
     }
 
@@ -53,7 +53,7 @@ public abstract class Socket implements Serializable
     @SuppressWarnings("unused")
     public abstract boolean getValue();
 
-    public boolean isNear(Point point) {
-        return getPosition().distanceTo(point) < SNAP_TO_DISTANCE;
+    public boolean isNear(Vec2 vec2) {
+        return getPosition().distanceTo(vec2) < SNAP_TO_DISTANCE;
     }
 }

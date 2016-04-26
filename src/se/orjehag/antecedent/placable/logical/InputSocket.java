@@ -1,7 +1,8 @@
 package se.orjehag.antecedent.placable.logical;
 
 /**
- * Created by erik on 05/04/16.
+ * Stores which output socket this input is connected to.
+ * An input socket can only be connected to one output.
  */
 public class InputSocket extends Socket {
 

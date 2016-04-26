@@ -3,7 +3,7 @@ package se.orjehag.antecedent.placable.logical.input;
 import se.orjehag.antecedent.placable.logical.Logical;
 
 /**
- * Created by erik on 05/04/16.
+ * A static high signal.
  */
 public class High extends Logical {
 

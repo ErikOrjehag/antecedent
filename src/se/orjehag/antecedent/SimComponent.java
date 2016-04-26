@@ -8,6 +8,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * The JComponent that contains the simulation. Responsible for
+ * mouse input and drawing the background. Also implements the
+ * drop interface for the drag and drop funktionallity. Holds
+ * an instance of Simulation which can be set with a setter
+ * to show a different circuit.
+ */
 public class SimComponent extends JComponent implements MouseListener, MouseMotionListener, CompDropTarget {
 
     private Simulation simulation = new Simulation();
@@ -61,25 +68,25 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        simulation.mouseMoved(e);
+        simulation.mouseMoved(new Vec2(e.getX(), e.getY()));
         repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        simulation.mouseMoved(e);
+        simulation.mouseMoved(new Vec2(e.getX(), e.getY()));
         repaint();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        simulation.mousePressed(e);
+        simulation.mousePressed(new Vec2(e.getX(), e.getY()));
         repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        simulation.mouseReleased(e);
+        simulation.mouseReleased(new Vec2(e.getX(), e.getY()));
         repaint();
     }
 
@@ -88,8 +95,7 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    @Override
-    public void compDrop(Placeable placable) {
+    @Override public void compDrop(Placeable placable) {
         simulation.add(placable);
     }
 

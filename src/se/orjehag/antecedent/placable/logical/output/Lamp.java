@@ -3,7 +3,7 @@ package se.orjehag.antecedent.placable.logical.output;
 import se.orjehag.antecedent.placable.logical.Logical;
 
 /**
- * Created by erik on 05/04/16.
+ * Shows if the input signal is 0 or 1.
  */
 public class Lamp extends Logical {
 

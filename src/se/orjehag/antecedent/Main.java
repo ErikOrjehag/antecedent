@@ -1,7 +1,7 @@
 package se.orjehag.antecedent;
 
 /**
- * Created by erik on 19/03/16.
+ * Program entry point.
  */
 public final class Main {
     private Main() {}

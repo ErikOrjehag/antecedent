@@ -9,33 +9,51 @@ import se.orjehag.antecedent.placable.logical.Socket;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.event.MouseEvent;
 import java.awt.geom.CubicCurve2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Created by erik on 31/03/16.
+ * Holds all current state of the simulation. It's responsible for
+ * keeping track of which components are in the simulation, how
+ * they are connected to each other and also for calculating the
+ * next state of the simulation by stepping forward in time.
  */
 public class Simulation implements Serializable
 {
+    /**
+     * A list of all placable components in the simulation.
+     */
     public List<Placeable> placeables = new ArrayList<>();
+    /**
+     * A list of the logical components, this should always be
+     * a subset of the placables list because all logicals are
+     * placables (Logical extends Placable).
+     */
     public List<Logical> logicals = new ArrayList<>();
+
+    // Used to do drag and drop of wires between components.
     private InputSocket fromInputSocket = null;
     private OutputSocket fromOutputSocket = null;
-    private Point mousePos = new Point();
+
+    private Vec2 mousePos = new Vec2();
+
+    private final Logger logger = Logger.getLogger(Simulation.class.getName());
+
     private static final Color LOGICAL_HIGH_COLOR = new Color(29, 123, 255);
     private static final Color LOGICAL_LOW_COLOR = Color.WHITE;
     // Needed to propagate changes, 2 works fine but I use 3 for
     // extra safety. Might want to increase to 4 in the future.
     private static final int ITERATIONS_PER_STEP = 3;
 
-    public Simulation() {
-
-    }
-
     public void step() {
+        // Added this log to get a sence of performance.
+        // I am currently stepping more oftan than I need to.
+        logger.log(Level.INFO, "Simulation step.");
+
         for (int n = 0; n < ITERATIONS_PER_STEP; n++) {
             for (int i = 0; i < logicals.size(); i++) {
                 logicals.get(i).step();
@@ -43,10 +61,14 @@ public class Simulation implements Serializable
         }
     }
 
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(Vec2 mousePos) {
 
+        // Wire drag and drop logic follows:
         for (Logical logical : logicals) {
             boolean shouldBreak = false;
+
+            // If the mouse is pressed near an output we
+            // want to keep track of that socket.
             for (OutputSocket outputSocket : logical.outputs) {
                 if (outputSocket.isNear(mousePos)) {
                     fromOutputSocket = outputSocket;
@@ -54,9 +76,13 @@ public class Simulation implements Serializable
                     break;
                 }
             }
+
             if (shouldBreak) {
                 break;
             }
+
+            // If the mouse is pressed near an input we
+            // want to keep track of that socket.
             for (InputSocket inputSocket : logical.inputs) {
                 if (inputSocket.isNear(mousePos)) {
                     if (inputSocket.isConnected()) {
@@ -69,22 +95,33 @@ public class Simulation implements Serializable
                     break;
                 }
             }
+
             if (shouldBreak) {
                 break;
             }
         }
 
+        // Let all placables know about the keypress.
+        // Buttons might want to know that they are
+        // clicked on for example.
         for (Placeable placable : placeables) {
-            placable.mousePressed(e);
+            placable.mousePressed(mousePos);
         }
 
+        // The mouse press might have effected the
+        // simulation state so lets step.
         step();
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(Vec2 mousePos) {
 
+        // Wire drag and drop logic follows:
         for (Logical logical : logicals) {
             boolean shouldBreak = false;
+
+            // If we release near an output and we are
+            // currently keeping track of an input that
+            // has been pressed on we want to connect them.
             if (fromInputSocket != null) {
                 for (OutputSocket outputSocket : logical.outputs) {
                     if (outputSocket.isNear(mousePos)) {
@@ -93,10 +130,14 @@ public class Simulation implements Serializable
                         break;
                     }
                 }
+
                 if (shouldBreak) {
                     break;
                 }
+
             } else if (fromOutputSocket != null) {
+
+                // Same but the other way around...
                 for (InputSocket inputSocket : logical.inputs) {
                     if (inputSocket.isNear(mousePos)) {
                         inputSocket.connectTo(fromOutputSocket);
@@ -104,6 +145,7 @@ public class Simulation implements Serializable
                         break;
                     }
                 }
+
                 if (shouldBreak) {
                     break;
                 }
@@ -113,20 +155,21 @@ public class Simulation implements Serializable
         fromInputSocket = null;
         fromOutputSocket = null;
 
+        // Let all placables know about the release.
+        // Buttons might want to swich off for example.
         for (Placeable placable : placeables) {
-            placable.mouseReleased(e);
+            placable.mouseReleased(mousePos);
         }
 
+        // The release could have effected the simulation
+        // so lets step!
         step();
     }
 
-    public void mouseMoved(MouseEvent e) {
-
-        mousePos.x = e.getX();
-        mousePos.y = e.getY();
-
+    public void mouseMoved(Vec2 mousePos) {
+        this.mousePos.set(mousePos);
         for (Placeable placable : placeables) {
-            placable.mouseMoved(e);
+            placable.mouseMoved(mousePos);
         }
     }
 
@@ -144,23 +187,26 @@ public class Simulation implements Serializable
             for (InputSocket input : logical.inputs) {
                 OutputSocket output = input.getConnectedTo();
                 if (output != null) {
-                    Point from = output.getPosition();
-                    Point to = input.getPosition();
+                    Vec2 from = output.getPosition();
+                    Vec2 to = input.getPosition();
                     boolean high = output.getValue();
                     drawWire(g2d, from, to, high);
                 }
             }
         }
 
+        // Draw drag and drop connection wire.
         Socket fromSocket = fromInputSocket != null ? fromInputSocket : fromOutputSocket;
-
         if (fromSocket != null) {
-            drawWire(g2d, fromSocket.getPosition(), mousePos, false);
+            Vec2 from = fromSocket.getPosition();
+            Vec2 to = mousePos;
+            boolean isHigh = false;
+            drawWire(g2d, from, to, isHigh);
         }
 
     }
 
-    private void drawWire(Graphics2D g2d, Point from, Point to, boolean high) {
+    private void drawWire(Graphics2D g2d, Vec2 from, Vec2 to, boolean high) {
         CubicCurve2D curve = new CubicCurve2D.Float();
         // Magic number 2 means dividing in half.
         //noinspection MagicNumber
@@ -175,6 +221,7 @@ public class Simulation implements Serializable
     }
 
     public void add(Placeable placeable) {
+        // Figure out which list to add to with polymorfism.
         placeable.addTo(placeables, logicals);
     }
 

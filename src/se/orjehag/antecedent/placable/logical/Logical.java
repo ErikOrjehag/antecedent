@@ -2,20 +2,25 @@ package se.orjehag.antecedent.placable.logical;
 
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import se.orjehag.antecedent.Point;
+import se.orjehag.antecedent.Vec2;
 import se.orjehag.antecedent.placable.Placeable;
 
 import java.util.List;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Created by erik on 31/03/16.
+ * Parent class of all logical components such as
+ * 4-bit display or AND, OR, NOT gates.
  */
 public abstract class Logical extends Placeable {
 
     public List<InputSocket> inputs = new ArrayList<>();
     public List<OutputSocket> outputs = new ArrayList<>();
+
+    private final Logger logger = Logger.getLogger(Logical.class.getName());
 
     protected Logical(int x, int y, int width, int height) {
         // Magic number 50 is default height and width.
@@ -42,7 +47,6 @@ public abstract class Logical extends Placeable {
     }
 
     public void step() {
-
         int inLen = inputs.size();
         boolean[] in = new boolean[inLen];
         for (int i = 0; i < inLen; i++) {
@@ -58,7 +62,7 @@ public abstract class Logical extends Placeable {
         }
     }
 
-    public Point relativeSocketPosition(Socket socket) {
+    public Vec2 relativeSocketPosition(Socket socket) {
         // This is not suspicious and not a bug. The method is used
         // to get the position of a socket relative to its Logical
         // owner. This assertion was added because you are not allowed
@@ -77,7 +81,7 @@ public abstract class Logical extends Placeable {
         // Magic number 2 means dividing in half.
         //noinspection MagicNumber
         int y = (int)(index * spacing + (len - 1) / 2.0f * -spacing);
-        return new Point(x, y);
+        return new Vec2(x, y);
     }
 
     public void draw(Graphics2D g2d) {
@@ -106,7 +110,7 @@ public abstract class Logical extends Placeable {
             // This is not suspicious, we need to know if its an input or output.
             //noinspection SuspiciousMethodCalls
             boolean isInput = inputs.contains(sockets.get(i));
-            Point pos = relativeSocketPosition(sockets.get(i));
+            Vec2 pos = relativeSocketPosition(sockets.get(i));
             g2d.drawLine(pos.x, pos.y, pos.x + 10 * (isInput ? 1 : -1), pos.y);
             g2d.fillOval(pos.x - 5, pos.y - 5, 5 * 2, 5 * 2);
         }
@@ -123,8 +127,9 @@ public abstract class Logical extends Placeable {
     }
 
     @Override
-    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
-        placeables.add(this);
+    public void addTo(List<Placeable> placables, List<Logical> logicals) {
+        logger.log(Level.INFO, "Adding logical.");
+        placables.add(this);
         logicals.add(this);
     }
 }

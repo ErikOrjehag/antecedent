@@ -8,48 +8,31 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
- * Created by erik on 19/03/16.
+ * This is the window. It is responsible for the
+ * layout of the application. It is also responsible
+ * for the top menu bar and the menu shortcuts.
  */
 public class SimFrame extends JFrame {
 
-    final static int WIDTH = 1400, HEIGHT = 700;
+    private final static int WIDTH = 1400, HEIGHT = 700;
+    private final static String WINDOW_TITLE = "Logic Simulator";
     private SimComponent simComponent;
 
-    private String fileExtension = "sim";
-    private JFileChooser fileChooser = new JFileChooser();
+    private final static String FILE_EXTENSION = "sim";
+    private final JFileChooser fileChooser = new JFileChooser();
+    private final Logger logger = Logger.getLogger(SimFrame.class.getName());
 
     public SimFrame() {
-        super("Logic Simulator");
+        super(WINDOW_TITLE);
 
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Simulation files", fileExtension));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Simulation files", FILE_EXTENSION));
 
-        setLayout(new BorderLayout());
-
-        JLayeredPane layers = new JLayeredPane();
-        add(layers, BorderLayout.CENTER);
-        layers.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
-        final JPanel back = new JPanel();
-        back.setBounds(0, 0, WIDTH, HEIGHT);
-        layers.add(back, Integer.valueOf(0));
-
-        final JPanel front = new JPanel();
-        front.setLayout(null);
-        front.setOpaque(false);
-        front.setBounds(0, 0, WIDTH, HEIGHT);
-        layers.add(front, Integer.valueOf(1));
-
-        back.setLayout(new BorderLayout());
-
-        simComponent = new SimComponent();
-        simComponent.setSimulation(ExamplesFactory.dFlipFlop());
-        back.add(simComponent, BorderLayout.CENTER);
-
-        back.add(new CompList(front, simComponent), BorderLayout.WEST);
-
+        createLayout();
         createMenu();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -59,31 +42,76 @@ public class SimFrame extends JFrame {
         setVisible(true);
     }
 
+    private void createLayout() {
+        setLayout(new BorderLayout());
+
+        // We need two layers.
+        JLayeredPane layers = new JLayeredPane();
+        add(layers, BorderLayout.CENTER);
+        layers.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        // The front layer is used as an overlay to
+        // create drag and drop functionallity of items
+        // in the list on the left to the
+        // simulation component on the right.
+        final JPanel front = new JPanel();
+        layers.add(front, Integer.valueOf(1));
+        front.setLayout(null);
+        front.setOpaque(false);
+        front.setBounds(0, 0, WIDTH, HEIGHT);
+
+        // The back layer contains most of the stuff,
+        // such as the scrolling component list to
+        // the left and the simulation component
+        // to the right.
+        final JPanel back = new JPanel();
+        layers.add(back, Integer.valueOf(0));
+        back.setBounds(0, 0, WIDTH, HEIGHT);
+        back.setLayout(new BorderLayout());
+
+        simComponent = new SimComponent();
+        simComponent.setSimulation(ExamplesFactory.dFlipFlop());
+        back.add(simComponent, BorderLayout.CENTER);
+
+        back.add(new CompList(front, simComponent), BorderLayout.WEST);
+    }
+
     private void createMenu() {
 
         // Platform independent shortcut key (Mac uses the Meta key, Windows and Linux uses Ctrl).
         int shortcut = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
 
+        // Menu bar that looks like [ File | Edit | Examples ].
         final JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
+        // File:
         final JMenu file = new JMenu("File");
         menuBar.add(file);
+
+        // Save simulation.
         final JMenuItem save = new JMenuItem("Save");
         save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, shortcut));
         save.addActionListener(this::saveCallback);
         file.add(save);
+
+        // Open simulation.
         final JMenuItem open = new JMenuItem("Open");
         open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, shortcut));
         open.addActionListener(this::openCallback);
         file.add(open);
+
+        // Quit application.
         final JMenuItem quit = new JMenuItem("Quit");
         quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, shortcut));
         quit.addActionListener(this::quitCallback);
         file.add(quit);
 
+        // Edit:
         final JMenu edit = new JMenu("Edit");
         menuBar.add(edit);
+
+        // Remove the selected placable.
         final JMenuItem removeSelected = new JMenuItem("Remove selected");
         removeSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
         removeSelected.addActionListener(this::removeSelectedCallback);
@@ -96,6 +124,8 @@ public class SimFrame extends JFrame {
                 removeSelected();
             }
         });
+
+        // Remove everything from the simulation.
         final JMenuItem removeAll = new JMenuItem("Remove all");
         removeAll.addActionListener(new AbstractAction()
         {
@@ -105,8 +135,11 @@ public class SimFrame extends JFrame {
         });
         edit.add(removeAll);
 
+        // Examples:
         final JMenu examples = new JMenu("Examples");
         menuBar.add(examples);
+
+        // A logical full adder example.
         final JMenuItem fullAdder = new JMenuItem("Full adder");
         fullAdder.addActionListener(new AbstractAction()
         {
@@ -115,6 +148,8 @@ public class SimFrame extends JFrame {
             }
         });
         examples.add(fullAdder);
+
+        // A logical flip flop example.
         final JMenuItem dflipflop = new JMenuItem("D flipflop");
         dflipflop.addActionListener(new AbstractAction()
         {
@@ -141,16 +176,18 @@ public class SimFrame extends JFrame {
 
             File file = fileChooser.getSelectedFile();
             String fileName = file.toString();
-            if (!fileName.endsWith("." + fileExtension)) {
-                fileName += "." + fileExtension;
+            if (!fileName.endsWith("." + FILE_EXTENSION)) {
+                fileName += "." + FILE_EXTENSION;
             }
 
+            // Try to save file and recover if we fail.
             try (FileOutputStream fileOut = new FileOutputStream(fileName); ObjectOutput out = new ObjectOutputStream(fileOut)) {
                 out.writeObject(simComponent.getSimulation());
                 out.close();
                 fileOut.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Error while trying to save simulation to file.", e);
+                JOptionPane.showMessageDialog(this, "Woops, unable to save simulation!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -163,12 +200,19 @@ public class SimFrame extends JFrame {
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+
+            // Try to open file and recover if we fail.
             try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
                 simulation = (Simulation) in.readObject();
                 in.close();
                 fileIn.close();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Error while trying to open simulation from file.", e);
+                JOptionPane.showMessageDialog(this, "Woops, unable to open simulation!", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ClassNotFoundException e) {
+                logger.log(Level.SEVERE, "Could not find class needed to open simulation stored in file.", e);
+                JOptionPane.showMessageDialog(this, "Woops, unable to open simulation! Your save file might not be up to date " +
+                                                    "with the current version of the application.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 

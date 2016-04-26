@@ -31,21 +31,15 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
         this.dragPanel = dragPanel;
         this.dropTarget = dropTarget;
         this.placableClass = placableClass;
-        this.placeable = createPlacableInstance(0, 0);
+        this.placeable = createInstance(0, 0);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
 
-    private Placeable createPlacableInstance(int x, int y) {
+    private Placeable createInstance(int x, int y) {
         try {
             return placableClass.getConstructor(new Class<?>[] { int.class, int.class }).newInstance(x, y);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;
@@ -76,7 +70,7 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
             Point point = draggable.getLocation();
             int x = (int) (point.getX() + size.width / 2 - dropTarget.getCompDropArea().getX());
             int y = (int) (point.getY() + size.height / 2 - dropTarget.getCompDropArea().getY());
-            dropTarget.compDrop(createPlacableInstance(x, y));
+            dropTarget.compDrop(createInstance(x, y));
         }
         dragPanel.remove(draggable);
         dragPanel.repaint();

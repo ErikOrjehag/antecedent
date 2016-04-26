@@ -1,9 +1,11 @@
 package se.orjehag.antecedent.placable.logical.input;
 
+import se.orjehag.antecedent.Vec2;
 import se.orjehag.antecedent.placable.logical.Logical;
 
-import java.awt.event.MouseEvent;
-
+/**
+ * Input toggle switch.
+ */
 public class Switch extends Logical {
 
     private boolean isOn = false;
@@ -19,9 +21,9 @@ public class Switch extends Logical {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        super.mousePressed(e);
-        if (Math.abs(e.getX() - position.x) < width / 2 && Math.abs(e.getY() - position.y) < width / 2) {
+    public void mousePressed(Vec2 mousePos) {
+        super.mousePressed(mousePos);
+        if (Math.abs(mousePos.x - position.x) < width / 2 && Math.abs(mousePos.y - position.y) < width / 2) {
             isOn = !isOn;
         }
     }
