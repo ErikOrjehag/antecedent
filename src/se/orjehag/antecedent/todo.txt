@@ -1,5 +1,6 @@
 
-Funktioner:
+
+Funktioner (önskelista):
 ===========
 -- Bilder kan dras ut.
 -- Ändra egenskaper hos placable med högerklick (text, bild, sockets).
@@ -8,16 +9,16 @@ Funktioner:
 -- Lägg till flipflops (D, JK, T).
 -- Lägg till fler exempel.
 -- Varna om en paradoxal krets kopplas.
+-- Möjlighet att skapa egna IC:s.
 
 Betyg:
 ===========
--- Fel får inte ignoreras.
--- Exceptions ska hanteras på rätt plats och återhämta sig.
+
+OK:
 -- Varje klass ska kommenteras (javadoc)
 -- Logga alla fel med java.util.logging
 -- Hårdkoda inte saker.
-
-OK:
+-- Exceptions ska hanteras.
 -- Använd paket.
 -- Följ namngivningskonventioner.
 -- Mnemonics och keybindnings.
