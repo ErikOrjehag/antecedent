@@ -46,7 +46,7 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
             logger.log(Level.SEVERE, "Error while trying to create a new instance of: " + placableClass.getName(), e);
             JOptionPane.showMessageDialog(this, "A program error occurred, could not recover! Bye Bye!", "Error", JOptionPane.ERROR_MESSAGE);
             // It does not make much sense to recover from this. Better to crash and fix the error.
-            System.exit(0);
+            System.exit(1);
         }
         return null;
     }
