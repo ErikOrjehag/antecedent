@@ -9,6 +9,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CompListItem extends JComponent implements MouseListener, MouseMotionListener {
 
@@ -17,6 +19,7 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
     private CompDropTarget dropTarget;
     private JPanel dragPanel;
     private Class<? extends Placeable> placableClass;
+    private final Logger logger = Logger.getLogger(CompListItem.class.getName());
 
     // It is true that this variable may not be initialized
     // but if that is the case we will handle it by catching
@@ -40,7 +43,10 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
         try {
             return placableClass.getConstructor(new Class<?>[] { int.class, int.class }).newInstance(x, y);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error while trying to create a new instance of: " + placableClass.getName(), e);
+            JOptionPane.showMessageDialog(this, "A program error occurred, could not recover! Bye Bye!", "Error", JOptionPane.ERROR_MESSAGE);
+            // It does not make much sense to recover from this. Better to crash and fix the error.
+            System.exit(0);
         }
         return null;
     }
