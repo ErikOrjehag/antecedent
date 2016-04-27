@@ -1,4 +1,4 @@
-package se.orjehag.antecedent.placable.logical;
+package se.orjehag.antecedent.placeable.logical;
 
 /**
  * Stores which output socket this input is connected to.

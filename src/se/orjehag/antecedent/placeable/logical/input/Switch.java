@@ -1,16 +1,16 @@
-package se.orjehag.antecedent.placable.logical.input;
+package se.orjehag.antecedent.placeable.logical.input;
 
 import se.orjehag.antecedent.Vec2;
-import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.Logical;
 
 /**
- * Momentary push button.
+ * Input toggle switch.
  */
-public class Button extends Logical {
+public class Switch extends Logical {
 
     private boolean isOn = false;
 
-    public Button(int x, int y) {
+    public Switch(int x, int y) {
         super(x, y);
         addOutputs(1);
     }
@@ -24,18 +24,11 @@ public class Button extends Logical {
     public void mousePressed(Vec2 mousePos) {
         super.mousePressed(mousePos);
         if (Math.abs(mousePos.x - position.x) < width / 2 && Math.abs(mousePos.y - position.y) < width / 2) {
-            isOn = true;
+            isOn = !isOn;
         }
     }
 
-    @Override
-    public void mouseReleased(Vec2 mousePos) {
-        super.mouseReleased(mousePos);
-        isOn = false;
-    }
-
-    @Override
-    protected String getLabel() {
-        return "BTN: " + (isOn ? "1" : "0");
+    @Override protected String getLabel() {
+        return "SW: " + (isOn ? "1" : "0");
     }
 }

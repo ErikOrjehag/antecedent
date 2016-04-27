@@ -1,6 +1,6 @@
-package se.orjehag.antecedent.placable.logical.output;
+package se.orjehag.antecedent.placeable.logical.output;
 
-import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.Logical;
 
 /**
  * Displays a four bit number (0-15) based on the 4 input signals.

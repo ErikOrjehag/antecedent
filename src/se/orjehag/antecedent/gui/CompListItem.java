@@ -1,6 +1,6 @@
 package se.orjehag.antecedent.gui;
 
-import se.orjehag.antecedent.placable.Placeable;
+import se.orjehag.antecedent.placeable.Placeable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
 
     // It is true that this variable may not be initialized
     // but if that is the case we will handle it by catching
-    // the exception in the createPlacableInstance method and
+    // the exception in the createInstance method and
     // then shutdown the application gracefully.
     @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private CompListDraggable draggable;

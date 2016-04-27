@@ -1,4 +1,4 @@
-package se.orjehag.antecedent.placable;
+package se.orjehag.antecedent.placeable;
 
 import java.awt.*;
 
@@ -11,7 +11,7 @@ public class Text extends Placeable {
 
     public Text(int x, int y) {
         // 80 is the default width and 20 is the
-        // default height of a placable Text object.
+        // default height of a placeable Text object.
         //noinspection MagicNumber
         super(x, y, 80, 20);
         text = "Text";

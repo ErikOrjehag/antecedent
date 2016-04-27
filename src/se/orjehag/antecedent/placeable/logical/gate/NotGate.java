@@ -1,6 +1,6 @@
-package se.orjehag.antecedent.placable.logical.gate;
+package se.orjehag.antecedent.placeable.logical.gate;
 
-import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.Logical;
 
 /**
  * NOT gate.

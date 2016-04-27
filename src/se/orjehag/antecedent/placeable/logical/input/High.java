@@ -1,6 +1,6 @@
-package se.orjehag.antecedent.placable.logical.input;
+package se.orjehag.antecedent.placeable.logical.input;
 
-import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.Logical;
 
 /**
  * A static high signal.

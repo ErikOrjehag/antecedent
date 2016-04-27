@@ -1,10 +1,10 @@
-package se.orjehag.antecedent.placable.logical;
+package se.orjehag.antecedent.placeable.logical;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * The CoutputScoket stores signal state in "value".
+ * The OutputSocket stores signal state in "value".
  * It has a list to the inputs it's connected to in
  * order to ask the inputs to remove the reference
  * to this output when it wants to disconnect.

@@ -1,7 +1,7 @@
 package se.orjehag.antecedent;
 
 import se.orjehag.antecedent.gui.CompDropTarget;
-import se.orjehag.antecedent.placable.Placeable;
+import se.orjehag.antecedent.placeable.Placeable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 /**
  * The JComponent that contains the simulation. Responsible for
  * mouse input and drawing the background. Also implements the
- * drop interface for the drag and drop funktionallity. Holds
+ * drop interface for the drag and drop functionality. Holds
  * an instance of Simulation which can be set with a setter
  * to show a different circuit.
  */
@@ -95,8 +95,8 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    @Override public void compDrop(Placeable placable) {
-        simulation.add(placable);
+    @Override public void compDrop(Placeable placeable) {
+        simulation.add(placeable);
     }
 
     @Override public void mouseClicked(MouseEvent e) {}

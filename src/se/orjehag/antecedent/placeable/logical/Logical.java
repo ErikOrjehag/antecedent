@@ -1,9 +1,9 @@
-package se.orjehag.antecedent.placable.logical;
+package se.orjehag.antecedent.placeable.logical;
 
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import se.orjehag.antecedent.Vec2;
-import se.orjehag.antecedent.placable.Placeable;
+import se.orjehag.antecedent.placeable.Placeable;
 
 import java.util.List;
 import java.awt.Graphics2D;
@@ -104,13 +104,12 @@ public abstract class Logical extends Placeable {
         List<Socket> sockets = new ArrayList<>();
         sockets.addAll(inputs);
         sockets.addAll(outputs);
-        int len = sockets.size();
 
-        for (int i = 0; i < len; i++) {
+        for (Socket socket : sockets) {
             // This is not suspicious, we need to know if its an input or output.
             //noinspection SuspiciousMethodCalls
-            boolean isInput = inputs.contains(sockets.get(i));
-            Vec2 pos = relativeSocketPosition(sockets.get(i));
+            boolean isInput = inputs.contains(socket);
+            Vec2 pos = relativeSocketPosition(socket);
             g2d.drawLine(pos.x, pos.y, pos.x + 10 * (isInput ? 1 : -1), pos.y);
             g2d.fillOval(pos.x - 5, pos.y - 5, 5 * 2, 5 * 2);
         }
@@ -120,6 +119,8 @@ public abstract class Logical extends Placeable {
 
     protected abstract String getLabel();
 
+    // This method always returns true so that it can be used in an expression like:
+    // logical.isSelected() && logical.disconnect()
     public boolean disconnect() {
         inputs.forEach(InputSocket::disconnect);
         outputs.forEach(OutputSocket::disconnect);
@@ -127,9 +128,9 @@ public abstract class Logical extends Placeable {
     }
 
     @Override
-    public void addTo(List<Placeable> placables, List<Logical> logicals) {
+    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
         logger.log(Level.INFO, "Adding logical.");
-        placables.add(this);
+        placeables.add(this);
         logicals.add(this);
     }
 }

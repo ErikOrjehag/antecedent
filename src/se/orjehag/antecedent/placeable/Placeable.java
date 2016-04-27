@@ -1,11 +1,11 @@
-package se.orjehag.antecedent.placable;
+package se.orjehag.antecedent.placeable;
 
 import se.orjehag.antecedent.*;
 
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.util.List;
-import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.Logical;
 
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -77,9 +77,9 @@ public abstract class Placeable implements Serializable
         return selected;
     }
 
-    public void addTo(List<Placeable> placables, List<Logical> logicals) {
-        logger.log(Level.INFO, "Adding placable.");
-        placables.add(this);
+    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
+        logger.log(Level.INFO, "Adding placeable.");
+        placeables.add(this);
         // Don't add to logicals.
     }
 }

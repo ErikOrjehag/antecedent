@@ -1,10 +1,10 @@
 package se.orjehag.antecedent;
 
-import se.orjehag.antecedent.placable.Placeable;
-import se.orjehag.antecedent.placable.logical.InputSocket;
-import se.orjehag.antecedent.placable.logical.Logical;
-import se.orjehag.antecedent.placable.logical.OutputSocket;
-import se.orjehag.antecedent.placable.logical.Socket;
+import se.orjehag.antecedent.placeable.Placeable;
+import se.orjehag.antecedent.placeable.logical.InputSocket;
+import se.orjehag.antecedent.placeable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.OutputSocket;
+import se.orjehag.antecedent.placeable.logical.Socket;
 
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
@@ -25,15 +25,15 @@ import java.util.logging.Logger;
 public class Simulation implements Serializable
 {
     /**
-     * A list of all placable components in the simulation.
+     * A list of all placeable components in the simulation.
      */
-    public List<Placeable> placeables = new ArrayList<>();
+    private List<Placeable> placeables = new ArrayList<>();
     /**
      * A list of the logical components, this should always be
      * a subset of the placables list because all logicals are
      * placables (Logical extends Placable).
      */
-    public List<Logical> logicals = new ArrayList<>();
+    private List<Logical> logicals = new ArrayList<>();
 
     // Used to do drag and drop of wires between components.
     private InputSocket fromInputSocket = null;
@@ -55,8 +55,8 @@ public class Simulation implements Serializable
         logger.log(Level.INFO, "Simulation step.");
 
         for (int n = 0; n < ITERATIONS_PER_STEP; n++) {
-            for (int i = 0; i < logicals.size(); i++) {
-                logicals.get(i).step();
+            for (Logical logical : logicals) {
+                logical.step();
             }
         }
     }
@@ -177,7 +177,7 @@ public class Simulation implements Serializable
 
         g2d.setStroke(new BasicStroke(1));
 
-        // Draw placable items that are on the board.
+        // Draw placeable items that are on the board.
         for (Placeable placeable : placeables) {
             placeable.draw(g2d);
         }
@@ -200,8 +200,7 @@ public class Simulation implements Serializable
         if (fromSocket != null) {
             Vec2 from = fromSocket.getPosition();
             Vec2 to = mousePos;
-            boolean isHigh = false;
-            drawWire(g2d, from, to, isHigh);
+            drawWire(g2d, from, to, false);
         }
 
     }

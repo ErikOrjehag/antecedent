@@ -1,6 +1,6 @@
-package se.orjehag.antecedent.placable.logical.output;
+package se.orjehag.antecedent.placeable.logical.output;
 
-import se.orjehag.antecedent.placable.logical.Logical;
+import se.orjehag.antecedent.placeable.logical.Logical;
 
 /**
  * Shows if the input signal is 0 or 1.

@@ -1,13 +1,13 @@
 package se.orjehag.antecedent;
 
-import se.orjehag.antecedent.placable.Text;
-import se.orjehag.antecedent.placable.logical.gate.AndGate;
-import se.orjehag.antecedent.placable.logical.gate.NandGate;
-import se.orjehag.antecedent.placable.logical.gate.OrGate;
-import se.orjehag.antecedent.placable.logical.gate.XOrGate;
-import se.orjehag.antecedent.placable.logical.input.Button;
-import se.orjehag.antecedent.placable.logical.input.Switch;
-import se.orjehag.antecedent.placable.logical.output.Lamp;
+import se.orjehag.antecedent.placeable.Text;
+import se.orjehag.antecedent.placeable.logical.gate.AndGate;
+import se.orjehag.antecedent.placeable.logical.gate.NandGate;
+import se.orjehag.antecedent.placeable.logical.gate.OrGate;
+import se.orjehag.antecedent.placeable.logical.gate.XOrGate;
+import se.orjehag.antecedent.placeable.logical.input.Button;
+import se.orjehag.antecedent.placeable.logical.input.Switch;
+import se.orjehag.antecedent.placeable.logical.output.Lamp;
 
 /**
  * A lot of example simulations made by hand to

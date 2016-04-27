@@ -51,7 +51,7 @@ public class SimFrame extends JFrame {
         layers.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         // The front layer is used as an overlay to
-        // create drag and drop functionallity of items
+        // create drag and drop functionality of items
         // in the list on the left to the
         // simulation component on the right.
         final JPanel front = new JPanel();
@@ -111,12 +111,12 @@ public class SimFrame extends JFrame {
         final JMenu edit = new JMenu("Edit");
         menuBar.add(edit);
 
-        // Remove the selected placable.
+        // Remove the selected placeable.
         final JMenuItem removeSelected = new JMenuItem("Remove selected");
         removeSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
         removeSelected.addActionListener(this::removeSelectedCallback);
         edit.add(removeSelected);
-        // Additional key binding to remove placable, for convenience.
+        // Additional key binding to remove placeable, for convenience.
         getRootPane().getInputMap().put(KeyStroke.getKeyStroke("DELETE"), "removeSelected");
         getRootPane().getActionMap().put("removeSelected", new AbstractAction() {
             @Override

@@ -1,20 +1,20 @@
 package se.orjehag.antecedent.gui;
 
 import se.orjehag.antecedent.SimComponent;
-import se.orjehag.antecedent.placable.Text;
-import se.orjehag.antecedent.placable.logical.gate.AndGate;
-import se.orjehag.antecedent.placable.logical.gate.NandGate;
-import se.orjehag.antecedent.placable.logical.gate.NorGate;
-import se.orjehag.antecedent.placable.logical.gate.NotGate;
-import se.orjehag.antecedent.placable.logical.gate.OrGate;
-import se.orjehag.antecedent.placable.logical.gate.XOrGate;
-import se.orjehag.antecedent.placable.logical.gate.XnorGate;
-import se.orjehag.antecedent.placable.logical.input.Button;
-import se.orjehag.antecedent.placable.logical.input.High;
-import se.orjehag.antecedent.placable.logical.input.Low;
-import se.orjehag.antecedent.placable.logical.input.Switch;
-import se.orjehag.antecedent.placable.logical.output.FourBitDisplay;
-import se.orjehag.antecedent.placable.logical.output.Lamp;
+import se.orjehag.antecedent.placeable.Text;
+import se.orjehag.antecedent.placeable.logical.gate.AndGate;
+import se.orjehag.antecedent.placeable.logical.gate.NandGate;
+import se.orjehag.antecedent.placeable.logical.gate.NorGate;
+import se.orjehag.antecedent.placeable.logical.gate.NotGate;
+import se.orjehag.antecedent.placeable.logical.gate.OrGate;
+import se.orjehag.antecedent.placeable.logical.gate.XOrGate;
+import se.orjehag.antecedent.placeable.logical.gate.XnorGate;
+import se.orjehag.antecedent.placeable.logical.input.Button;
+import se.orjehag.antecedent.placeable.logical.input.High;
+import se.orjehag.antecedent.placeable.logical.input.Low;
+import se.orjehag.antecedent.placeable.logical.input.Switch;
+import se.orjehag.antecedent.placeable.logical.output.FourBitDisplay;
+import se.orjehag.antecedent.placeable.logical.output.Lamp;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +27,7 @@ public class CompList extends JScrollPane {
     private JPanel panel;
     private static final Color TITLE_BACKGROUND_COLOR = new Color(200, 200, 200);
 
-    // I got this warning because this methods lists all the classes of the placable components.
+    // I got this warning because this methods lists all the classes of the placeable components.
     // It's meant to be a list so there is not much I can do about it.
     @SuppressWarnings("OverlyCoupledMethod")
     public CompList(JPanel dragPanel, SimComponent dropTarget) {

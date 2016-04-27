@@ -18,7 +18,7 @@ public class CompListDraggable extends JComponent {
     private volatile int screenY = 0;
     private volatile int myX = 0;
     private volatile int myY = 0;
-    private CompListItem item;
+    private final CompListItem item;
     private BufferedImage plusImage = null;
     private final Logger logger = Logger.getLogger(CompListDraggable.class.getName());
 
