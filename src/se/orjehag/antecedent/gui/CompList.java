@@ -2,6 +2,8 @@ package se.orjehag.antecedent.gui;
 
 import se.orjehag.antecedent.SimComponent;
 import se.orjehag.antecedent.placeable.Text;
+import se.orjehag.antecedent.placeable.logical.flop.Dflipflop;
+import se.orjehag.antecedent.placeable.logical.flop.Tflipflop;
 import se.orjehag.antecedent.placeable.logical.gate.AndGate;
 import se.orjehag.antecedent.placeable.logical.gate.NandGate;
 import se.orjehag.antecedent.placeable.logical.gate.NorGate;
@@ -62,6 +64,13 @@ public class CompList extends JScrollPane {
         outputs.add(new CompListItem(dragPanel, dropTarget, FourBitDisplay.class));
         outputs.add(new CompListItem(dragPanel, dropTarget, Lamp.class));
         panel.add(outputs);
+
+        /*addTitle("Flipflops");
+        JPanel flopflops = new JPanel();
+        flopflops.setLayout(new GridLayout(1, 2));
+        flopflops.add(new CompListItem(dragPanel, dropTarget, Dflipflop.class));
+        flopflops.add(new CompListItem(dragPanel, dropTarget, Tflipflop.class));
+        panel.add(flopflops);*/
 
         addTitle("Others");
         JPanel others = new JPanel();
