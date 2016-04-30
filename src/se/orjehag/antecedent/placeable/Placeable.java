@@ -4,8 +4,6 @@ import se.orjehag.antecedent.*;
 
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
-import java.util.List;
-import se.orjehag.antecedent.placeable.logical.Logical;
 
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -35,6 +33,10 @@ public abstract class Placeable implements Serializable
         this.height = height;
     }
 
+    public void init() {
+        // This method is called when the placable is added to the simulation.
+    }
+
     public void draw(Graphics2D g2d) {
         if (selected) {
             AffineTransform oldTransform = g2d.getTransform();
@@ -54,17 +56,27 @@ public abstract class Placeable implements Serializable
         return position;
     }
 
-    public void mousePressed(Vec2 mousePos) {
+    public void leftMousePressed(Vec2 mousePos) {
         selected = false;
-        if (Math.abs(mousePos.x - position.x) < width / 2 && Math.abs(mousePos.y - position.y) < height / 2) {
+        if (contains(mousePos)) {
             isDragging = true;
             mouseOffset = position.minus(new Vec2(mousePos.x, mousePos.y));
             selected = true;
         }
     }
 
-    public void mouseReleased(Vec2 mousePos) {
+    public void leftMouseReleased(Vec2 mousePos) {
         isDragging = false;
+    }
+
+    public void rightMousePressed(Vec2 mousePos) {
+        if (contains(mousePos)) {
+            showPropertiesDialog();
+        }
+    }
+
+    public void rightMouseReleased(Vec2 mousePos) {
+
     }
 
     public void mouseMoved(Vec2 mousePos) {
@@ -77,9 +89,17 @@ public abstract class Placeable implements Serializable
         return selected;
     }
 
-    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
+    public void addTo(Simulation simulation) {
         logger.log(Level.INFO, "Adding placeable.");
-        placeables.add(this);
-        // Don't add to logicals.
+        simulation.addPlacable(this);
+    }
+
+    public boolean contains(Vec2 vec) {
+        return Math.abs(vec.x - position.x) < width / 2 && Math.abs(vec.y - position.y) < height / 2;
+    }
+
+    public void showPropertiesDialog() {
+        // Placables that have properties that they
+        // want changed can override this method.
     }
 }

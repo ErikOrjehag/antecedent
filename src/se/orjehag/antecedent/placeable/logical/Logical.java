@@ -2,6 +2,8 @@ package se.orjehag.antecedent.placeable.logical;
 
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+
+import se.orjehag.antecedent.Simulation;
 import se.orjehag.antecedent.Vec2;
 import se.orjehag.antecedent.placeable.Placeable;
 
@@ -19,6 +21,8 @@ public abstract class Logical extends Placeable {
 
     public List<InputSocket> inputs = new ArrayList<>();
     public List<OutputSocket> outputs = new ArrayList<>();
+    private boolean[] nextOutputs = null;
+    private List<InteractionListener> interactionListeners = new ArrayList<>();
 
     private final Logger logger = Logger.getLogger(Logical.class.getName());
 
@@ -52,13 +56,13 @@ public abstract class Logical extends Placeable {
         for (int i = 0; i < inLen; i++) {
             in[i] = inputs.get(i).getValue();
         }
+        nextOutputs = func(in);
+    }
 
-        boolean[] out = func(in);
-
-        assert outputs.size() == out.length;
-
+    public void commit() {
+        assert outputs.size() == nextOutputs.length;
         for (int i = 0; i < outputs.size(); i++) {
-            outputs.get(i).setValue(out[i]);
+            outputs.get(i).setValue(nextOutputs[i]);
         }
     }
 
@@ -127,10 +131,17 @@ public abstract class Logical extends Placeable {
         return true;
     }
 
+    public void addInteractionListener(InteractionListener interactionListener) {
+        interactionListeners.add(interactionListener);
+    }
+
+    public void notifyInteractionListeners() {
+        interactionListeners.forEach(InteractionListener::onInteraction);
+    }
+
     @Override
-    public void addTo(List<Placeable> placeables, List<Logical> logicals) {
+    public void addTo(Simulation simulation) {
         logger.log(Level.INFO, "Adding logical.");
-        placeables.add(this);
-        logicals.add(this);
+        simulation.addLogical(this);
     }
 }

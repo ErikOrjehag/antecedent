@@ -2,6 +2,7 @@ package se.orjehag.antecedent;
 
 import se.orjehag.antecedent.placeable.Placeable;
 import se.orjehag.antecedent.placeable.logical.InputSocket;
+import se.orjehag.antecedent.placeable.logical.InteractionListener;
 import se.orjehag.antecedent.placeable.logical.Logical;
 import se.orjehag.antecedent.placeable.logical.OutputSocket;
 import se.orjehag.antecedent.placeable.logical.Socket;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  * they are connected to each other and also for calculating the
  * next state of the simulation by stepping forward in time.
  */
-public class Simulation implements Serializable
+public class Simulation implements Serializable, InteractionListener
 {
     /**
      * A list of all placeable components in the simulation.
@@ -35,6 +36,8 @@ public class Simulation implements Serializable
      */
     private List<Logical> logicals = new ArrayList<>();
 
+    private List<StepListener> stepListeners = new ArrayList<>();
+
     // Used to do drag and drop of wires between components.
     private InputSocket fromInputSocket = null;
     private OutputSocket fromOutputSocket = null;
@@ -45,23 +48,26 @@ public class Simulation implements Serializable
 
     private static final Color LOGICAL_HIGH_COLOR = new Color(29, 123, 255);
     private static final Color LOGICAL_LOW_COLOR = Color.WHITE;
-    // Needed to propagate changes, 2 works fine but I use 3 for
-    // extra safety. Might want to increase to 4 in the future.
-    private static final int ITERATIONS_PER_STEP = 3;
+    // This means that you can't have a flop flop depth of more than 4 or
+    // else the changes will not propagate the circuit all the way though.
+    private static final int ITERATIONS_PER_STEP = 4;
 
     public void step() {
         // Added this log to get a sence of performance.
         // I am currently stepping more oftan than I need to.
         logger.log(Level.INFO, "Simulation step.");
-
         for (int n = 0; n < ITERATIONS_PER_STEP; n++) {
             for (Logical logical : logicals) {
                 logical.step();
             }
+            for (Logical logical : logicals) {
+                logical.commit();
+            }
         }
+        notifyStepListeners();
     }
 
-    public void mousePressed(Vec2 mousePos) {
+    public void leftMousePressed(Vec2 mousePos) {
 
         // Wire drag and drop logic follows:
         for (Logical logical : logicals) {
@@ -88,6 +94,7 @@ public class Simulation implements Serializable
                     if (inputSocket.isConnected()) {
                         fromOutputSocket = inputSocket.getConnectedTo();
                         inputSocket.disconnect();
+                        step();
                     } else {
                         fromInputSocket = inputSocket;
                     }
@@ -101,19 +108,12 @@ public class Simulation implements Serializable
             }
         }
 
-        // Let all placables know about the keypress.
-        // Buttons might want to know that they are
-        // clicked on for example.
         for (Placeable placable : placeables) {
-            placable.mousePressed(mousePos);
+            placable.leftMousePressed(mousePos);
         }
-
-        // The mouse press might have effected the
-        // simulation state so lets step.
-        step();
     }
 
-    public void mouseReleased(Vec2 mousePos) {
+    public void leftMouseReleased(Vec2 mousePos) {
 
         // Wire drag and drop logic follows:
         for (Logical logical : logicals) {
@@ -126,6 +126,7 @@ public class Simulation implements Serializable
                 for (OutputSocket outputSocket : logical.outputs) {
                     if (outputSocket.isNear(mousePos)) {
                         fromInputSocket.connectTo(outputSocket);
+                        step();
                         shouldBreak = true;
                         break;
                     }
@@ -141,6 +142,7 @@ public class Simulation implements Serializable
                 for (InputSocket inputSocket : logical.inputs) {
                     if (inputSocket.isNear(mousePos)) {
                         inputSocket.connectTo(fromOutputSocket);
+                        step();
                         shouldBreak = true;
                         break;
                     }
@@ -155,15 +157,21 @@ public class Simulation implements Serializable
         fromInputSocket = null;
         fromOutputSocket = null;
 
-        // Let all placables know about the release.
-        // Buttons might want to swich off for example.
         for (Placeable placable : placeables) {
-            placable.mouseReleased(mousePos);
+            placable.leftMouseReleased(mousePos);
         }
+    }
 
-        // The release could have effected the simulation
-        // so lets step!
-        step();
+    public void rightMousePressed(Vec2 mousePos) {
+        for (Placeable placable : placeables) {
+            placable.rightMousePressed(mousePos);
+        }
+    }
+
+    public void rightMouseReleased(Vec2 mousePos) {
+        for (Placeable placable : placeables) {
+            placable.rightMouseReleased(mousePos);
+        }
     }
 
     public void mouseMoved(Vec2 mousePos) {
@@ -200,7 +208,8 @@ public class Simulation implements Serializable
         if (fromSocket != null) {
             Vec2 from = fromSocket.getPosition();
             Vec2 to = mousePos;
-            drawWire(g2d, from, to, false);
+            boolean isHigh = fromSocket.getValue();
+            drawWire(g2d, from, to, isHigh);
         }
 
     }
@@ -220,8 +229,21 @@ public class Simulation implements Serializable
     }
 
     public void add(Placeable placeable) {
-        // Figure out which list to add to with polymorfism.
-        placeable.addTo(placeables, logicals);
+        // Figure out which list to add to with polymorfism,
+        // instead of instanceof if statement.
+        placeable.addTo(this);
+    }
+
+    public void addLogical(Logical logical) {
+        placeables.add(logical);
+        logicals.add(logical);
+        logical.addInteractionListener(this);
+        logical.init();
+    }
+
+    public void addPlacable(Placeable placeable) {
+        placeables.add(placeable);
+        placeable.init();
     }
 
     public void removeSelected() {
@@ -230,9 +252,27 @@ public class Simulation implements Serializable
         // removing items from. I still had problems when I used Iterable
         // and getNext() but this removeIf() method has solved the problem.
         placeables.removeIf(e -> (e.isSelected()));
+
         // This is a little hacky. The disconnect method will only be
         // called if isSelected() evaluates to true. Disconnect always
         // returns true.
+        int len = logicals.size();
         logicals.removeIf(e -> (e.isSelected() && e.disconnect()));
+        // Step simulation if a logical was removed.
+        if (logicals.size() != len) {
+            step();
+        }
+    }
+
+    public void addStepListener(StepListener stepListener) {
+        stepListeners.add(stepListener);
+    }
+
+    private void notifyStepListeners() {
+        stepListeners.forEach(StepListener::onStep);
+    }
+
+    @Override public void onInteraction() {
+        step();
     }
 }

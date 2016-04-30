@@ -3,11 +3,7 @@
 Funktioner (önskelista):
 ===========
 -- Bilder kan dras ut.
--- Ändra egenskaper hos placable med högerklick (text, bild, sockets).
--- Steppa bara när det behövs.
--- Lägg till klock-input.
--- Lägg till flipflops (D, JK, T).
--- Lägg till fler exempel.
+-- Ändra egenskaper hos placable med högerklick (text, bild).
 -- Varna om en paradoxal krets kopplas.
 -- Möjlighet att skapa egna IC:s.
 

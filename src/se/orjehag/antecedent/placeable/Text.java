@@ -1,5 +1,6 @@
 package se.orjehag.antecedent.placeable;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -10,11 +11,9 @@ public class Text extends Placeable {
     private String text;
 
     public Text(int x, int y) {
-        // 80 is the default width and 20 is the
-        // default height of a placeable Text object.
-        //noinspection MagicNumber
+        // Magic number is default height of a placeable Text object.
         super(x, y, 80, 20);
-        text = "Text";
+        setText("Text");
     }
 
     public void setText(String text) {
@@ -26,6 +25,15 @@ public class Text extends Placeable {
         super.draw(g2d);
         g2d.setColor(Color.BLACK);
         int stringWidth = g2d.getFontMetrics().stringWidth(text);
+        width = stringWidth + 20;
         g2d.drawString(text, position.x - stringWidth / 2, position.y);
+    }
+
+    @Override
+    public void showPropertiesDialog() {
+        String newText = JOptionPane.showInputDialog("Enter text:");
+        if (newText != null && !newText.equals("")) {
+            setText(newText);
+        }
     }
 }

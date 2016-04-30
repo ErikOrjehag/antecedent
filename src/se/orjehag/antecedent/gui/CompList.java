@@ -2,8 +2,8 @@ package se.orjehag.antecedent.gui;
 
 import se.orjehag.antecedent.SimComponent;
 import se.orjehag.antecedent.placeable.Text;
-import se.orjehag.antecedent.placeable.logical.flop.Dflipflop;
-import se.orjehag.antecedent.placeable.logical.flop.Tflipflop;
+import se.orjehag.antecedent.placeable.logical.flop.Dflop;
+import se.orjehag.antecedent.placeable.logical.flop.Tflop;
 import se.orjehag.antecedent.placeable.logical.gate.AndGate;
 import se.orjehag.antecedent.placeable.logical.gate.NandGate;
 import se.orjehag.antecedent.placeable.logical.gate.NorGate;
@@ -12,6 +12,7 @@ import se.orjehag.antecedent.placeable.logical.gate.OrGate;
 import se.orjehag.antecedent.placeable.logical.gate.XOrGate;
 import se.orjehag.antecedent.placeable.logical.gate.XnorGate;
 import se.orjehag.antecedent.placeable.logical.input.Button;
+import se.orjehag.antecedent.placeable.logical.input.Clock;
 import se.orjehag.antecedent.placeable.logical.input.High;
 import se.orjehag.antecedent.placeable.logical.input.Low;
 import se.orjehag.antecedent.placeable.logical.input.Switch;
@@ -37,9 +38,11 @@ public class CompList extends JScrollPane {
         panel = (JPanel) getViewport().getView();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        final int columns = 2;
+
         addTitle("Gates");
         JPanel gates = new JPanel();
-        gates.setLayout(new GridLayout(4, 2));
+        gates.setLayout(new GridLayout(4, columns));
         gates.add(new CompListItem(dragPanel, dropTarget, AndGate.class));
         gates.add(new CompListItem(dragPanel, dropTarget, NandGate.class));
         gates.add(new CompListItem(dragPanel, dropTarget, OrGate.class));
@@ -51,30 +54,31 @@ public class CompList extends JScrollPane {
 
         addTitle("Inputs");
         JPanel inputs = new JPanel();
-        inputs.setLayout(new GridLayout(2, 2));
+        inputs.setLayout(new GridLayout(3, columns));
         inputs.add(new CompListItem(dragPanel, dropTarget, High.class));
         inputs.add(new CompListItem(dragPanel, dropTarget, Low.class));
         inputs.add(new CompListItem(dragPanel, dropTarget, Button.class));
         inputs.add(new CompListItem(dragPanel, dropTarget, Switch.class));
+        inputs.add(new CompListItem(dragPanel, dropTarget, Clock.class));
         panel.add(inputs);
 
         addTitle("Outputs");
         JPanel outputs = new JPanel();
-        outputs.setLayout(new GridLayout(1, 2));
+        outputs.setLayout(new GridLayout(1, columns));
         outputs.add(new CompListItem(dragPanel, dropTarget, FourBitDisplay.class));
         outputs.add(new CompListItem(dragPanel, dropTarget, Lamp.class));
         panel.add(outputs);
 
-        /*addTitle("Flipflops");
+        addTitle("Flipflops");
         JPanel flopflops = new JPanel();
-        flopflops.setLayout(new GridLayout(1, 2));
-        flopflops.add(new CompListItem(dragPanel, dropTarget, Dflipflop.class));
-        flopflops.add(new CompListItem(dragPanel, dropTarget, Tflipflop.class));
-        panel.add(flopflops);*/
+        flopflops.setLayout(new GridLayout(1, columns));
+        flopflops.add(new CompListItem(dragPanel, dropTarget, Dflop.class));
+        flopflops.add(new CompListItem(dragPanel, dropTarget, Tflop.class));
+        panel.add(flopflops);
 
         addTitle("Others");
         JPanel others = new JPanel();
-        others.setLayout(new GridLayout(1, 2));
+        others.setLayout(new GridLayout(1, columns));
         others.add(new CompListItem(dragPanel, dropTarget, Text.class));
         panel.add(others);
     }

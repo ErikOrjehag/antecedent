@@ -24,7 +24,7 @@ import java.io.Serializable;
  *          Stores the value (state) in a boolean.
  *          Because it doesn't store the relation (connection) to the input socket it must notify the input socket
  *          if it wants to disconnect and ask it to remove the relation. This is done by storing the input sockets
- *          it's connected to in a list and when the output wants to disconnect itself from the inputs at asks
+ *          it's connected to in a list and when the output wants to disconnect itself from the inputs it asks
  *          each of them in turn to remove the relation.
  *        ]
  *

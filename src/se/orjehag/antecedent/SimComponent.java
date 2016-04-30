@@ -15,9 +15,9 @@ import java.awt.image.BufferedImage;
  * an instance of Simulation which can be set with a setter
  * to show a different circuit.
  */
-public class SimComponent extends JComponent implements MouseListener, MouseMotionListener, CompDropTarget {
+public class SimComponent extends JComponent implements MouseListener, MouseMotionListener, CompDropTarget, StepListener {
 
-    private Simulation simulation = new Simulation();
+    private Simulation simulation = null;
     private final static Color BACKGROUND_COLOR = new Color(220, 220, 220);
     private final static Color GRID_COLOR = new Color(160, 160, 160);
     private final static int GRID_SIZE = 20;
@@ -25,6 +25,7 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
     public SimComponent() {
         addMouseListener(this);
         addMouseMotionListener(this);
+        setSimulation(new Simulation());
     }
 
     @Override public Dimension getPreferredSize() {
@@ -58,8 +59,8 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
 
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
+        this.simulation.addStepListener(this);
         this.simulation.step();
-        repaint();
     }
 
     public Simulation getSimulation() {
@@ -80,13 +81,21 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
 
     @Override
     public void mousePressed(MouseEvent e) {
-        simulation.mousePressed(new Vec2(e.getX(), e.getY()));
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            simulation.leftMousePressed(new Vec2(e.getX(), e.getY()));
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            simulation.rightMousePressed(new Vec2(e.getX(), e.getY()));
+        }
         repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        simulation.mouseReleased(new Vec2(e.getX(), e.getY()));
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            simulation.leftMouseReleased(new Vec2(e.getX(), e.getY()));
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            simulation.rightMouseReleased(new Vec2(e.getX(), e.getY()));
+        }
         repaint();
     }
 
@@ -102,4 +111,8 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
     @Override public void mouseClicked(MouseEvent e) {}
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
+
+    @Override public void onStep() {
+        repaint();
+    }
 }

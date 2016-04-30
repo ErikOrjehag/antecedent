@@ -70,7 +70,7 @@ public class SimFrame extends JFrame {
         back.setLayout(new BorderLayout());
 
         simComponent = new SimComponent();
-        //simComponent.setSimulation(ExamplesFactory.dFlipFlop());
+        simComponent.setSimulation(ExamplesFactory.introSim());
         back.add(simComponent, BorderLayout.CENTER);
 
         back.add(new CompList(front, simComponent), BorderLayout.WEST);
@@ -139,7 +139,7 @@ public class SimFrame extends JFrame {
         final JMenu examples = new JMenu("Examples");
         menuBar.add(examples);
 
-        // A logical full adder example.
+        // Full adder example.
         final JMenuItem fullAdder = new JMenuItem("Full adder");
         fullAdder.addActionListener(new AbstractAction()
         {
@@ -149,7 +149,7 @@ public class SimFrame extends JFrame {
         });
         examples.add(fullAdder);
 
-        // A logical flip flop example.
+        // Flip flop example.
         final JMenuItem dflipflop = new JMenuItem("D flipflop");
         dflipflop.addActionListener(new AbstractAction()
         {
@@ -158,6 +158,26 @@ public class SimFrame extends JFrame {
             }
         });
         examples.add(dflipflop);
+
+        // Click counter example.
+        final JMenuItem clickCounter = new JMenuItem("Click counter");
+        clickCounter.addActionListener(new AbstractAction()
+        {
+            @Override public void actionPerformed(final ActionEvent e) {
+                simComponent.setSimulation(ExamplesFactory.clickCounter());
+            }
+        });
+        examples.add(clickCounter);
+
+        // Click counter example.
+        final JMenuItem cascadingFlipFlops = new JMenuItem("Cascading flip flops");
+        cascadingFlipFlops.addActionListener(new AbstractAction()
+        {
+            @Override public void actionPerformed(final ActionEvent e) {
+                simComponent.setSimulation(ExamplesFactory.cascadingFlipFlops());
+            }
+        });
+        examples.add(cascadingFlipFlops);
     }
 
     // Still needs the parameter even though it's never used

@@ -13,6 +13,13 @@ public class High extends Logical {
     }
 
     @Override
+    public void init() {
+        // Propagate the constant high to the output socket.
+        step();
+        commit();
+    }
+
+    @Override
     public boolean[] func(boolean[] in) {
         return new boolean[]{ true };
     }

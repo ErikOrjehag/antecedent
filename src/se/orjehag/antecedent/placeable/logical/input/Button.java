@@ -21,17 +21,21 @@ public class Button extends Logical {
     }
 
     @Override
-    public void mousePressed(Vec2 mousePos) {
-        super.mousePressed(mousePos);
-        if (Math.abs(mousePos.x - position.x) < width / 2 && Math.abs(mousePos.y - position.y) < width / 2) {
+    public void leftMousePressed(Vec2 mousePos) {
+        super.leftMousePressed(mousePos);
+        if (contains(mousePos)) {
             isOn = true;
+            notifyInteractionListeners();
         }
     }
 
     @Override
-    public void mouseReleased(Vec2 mousePos) {
-        super.mouseReleased(mousePos);
-        isOn = false;
+    public void leftMouseReleased(Vec2 mousePos) {
+        super.leftMouseReleased(mousePos);
+        if (isOn) {
+            isOn = false;
+            notifyInteractionListeners();
+        }
     }
 
     @Override
