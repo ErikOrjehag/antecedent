@@ -40,6 +40,8 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         drawGrid(g2d);
+
+        simulation.draw(g2d);
     }
 
     private void drawGrid(Graphics2D g2d) {
@@ -53,8 +55,6 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
             }
         }
         g2d.drawImage(gridImage, null, null);
-
-        simulation.draw(g2d);
     }
 
     public void setSimulation(Simulation sim) {

@@ -47,6 +47,7 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
             // If not, that is a programming error that we should fix immediately. That's why I shut
             // down the program in the catch block.
             return placableClass.getConstructor(new Class<?>[] { int.class, int.class }).newInstance(x, y);
+
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             logger.log(Level.SEVERE, "Error while trying to create a new instance of: " + placableClass.getName(), e);
             JOptionPane.showMessageDialog(this, "A program error occurred, could not recover! Bye Bye!", "Error", JOptionPane.ERROR_MESSAGE);

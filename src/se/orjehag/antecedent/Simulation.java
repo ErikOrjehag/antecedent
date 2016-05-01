@@ -49,9 +49,9 @@ public class Simulation implements Serializable, InteractionListener
 
     private static final Color LOGICAL_HIGH_COLOR = new Color(29, 123, 255);
     private static final Color LOGICAL_LOW_COLOR = Color.WHITE;
-    // This means that you can't have a flop flop depth of more than 4 or
+    // This means that you can't have a circuit depth of more than this value or
     // else the changes will not propagate the circuit all the way though.
-    private static final int ITERATIONS_PER_STEP = 4;
+    private static final int ITERATIONS_PER_STEP = 10;
 
     public void step() {
         // Added this log to get a sence of performance.

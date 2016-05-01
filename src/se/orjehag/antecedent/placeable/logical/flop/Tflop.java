@@ -1,31 +1,22 @@
 package se.orjehag.antecedent.placeable.logical.flop;
 
-import se.orjehag.antecedent.placeable.logical.Logical;
-
 /**
  * T Flop Flop
  */
-public class Tflop extends Logical
+public class Tflop extends Flop
 {
-    private boolean prevClock = false;
-    private boolean Q = false;
-
     public Tflop(final int x, final int y) {
 	super(x, y);
-	addInputs(2);
-	addOutputs(2);
     }
 
     @Override public boolean[] func(final boolean[] in) {
+	super.func(in);
+
 	assert in.length == 2;
 
 	boolean T = in[0];
-	boolean clock = in[1];
 
-	boolean risingClock = !prevClock && clock;
-	prevClock = clock;
-
-	if (risingClock && T) {
+	if (isRisingClock() && T) {
 	    Q = !Q;
 	}
 
