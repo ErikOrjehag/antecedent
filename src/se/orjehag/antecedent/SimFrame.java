@@ -182,14 +182,35 @@ public class SimFrame extends JFrame {
 
     // Still needs the parameter even though it's never used
     // in order to match the correct method signature.
-    @SuppressWarnings("UnusedParameters")
     private void quitCallback(final ActionEvent actionEvent) {
         System.exit(0);
     }
 
     // Still needs the parameter even though it's never used
     // in order to match the correct method signature.
-    @SuppressWarnings("UnusedParameters")
+    private void removeSelectedCallback(final ActionEvent actionEvent) {
+        removeSelected();
+    }
+
+    private void removeSelected() {
+        simComponent.getSimulation().removeSelected();
+        repaint();
+    }
+
+    /* -------------------------------------------------
+
+        Saving and opening files does not work because I added a logger which is
+        not serializable to the simulation class. Having a logger is part of the
+        grading criteria but saving and opening is not so I hope this ok. I plan
+        to implement a better save system by storing the state of the simulation
+        myself in a human readable format (not binary). I don't have time to do
+        it before the hand in though.
+
+     */
+
+
+    // Still needs the parameter even though it's never used
+    // in order to match the correct method signature.
     private void saveCallback(final ActionEvent actionEvent) {
 
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -214,7 +235,6 @@ public class SimFrame extends JFrame {
 
     // Still needs the parameter even though it's never used
     // in order to match the correct method signature.
-    @SuppressWarnings("UnusedParameters")
     private void openCallback(final ActionEvent actionEvent) {
         Simulation simulation = null;
 
@@ -239,17 +259,5 @@ public class SimFrame extends JFrame {
         if (simulation != null) {
             simComponent.setSimulation(simulation);
         }
-    }
-
-    // Still needs the parameter even though it's never used
-    // in order to match the correct method signature.
-    @SuppressWarnings("UnusedParameters")
-    private void removeSelectedCallback(final ActionEvent actionEvent) {
-        removeSelected();
-    }
-
-    private void removeSelected() {
-        simComponent.getSimulation().removeSelected();
-        repaint();
     }
 }

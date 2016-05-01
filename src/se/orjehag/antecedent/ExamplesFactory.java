@@ -27,7 +27,6 @@ public final class ExamplesFactory
     private ExamplesFactory() {}
 
     // X and Y positions of logical components are not magic numbers.
-    @SuppressWarnings("MagicNumber")
     public static Simulation fullAdder() {
 	Simulation simulation = new Simulation();
 

@@ -17,6 +17,7 @@ public class Button extends Logical {
 
     @Override
     public boolean[] func(boolean[] in) {
+        assert in.length == 0;
         return new boolean[]{ isOn };
     }
 

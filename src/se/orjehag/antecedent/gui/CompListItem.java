@@ -12,6 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Item of the scroll pane to the left.
+ */
 public class CompListItem extends JComponent implements MouseListener, MouseMotionListener {
 
     public Dimension size = new Dimension(90, 80);
@@ -25,7 +28,6 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
     // but if that is the case we will handle it by catching
     // the exception in the createInstance method and
     // then shutdown the application gracefully.
-    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private CompListDraggable draggable;
 
 
@@ -41,6 +43,9 @@ public class CompListItem extends JComponent implements MouseListener, MouseMoti
 
     private Placeable createInstance(int x, int y) {
         try {
+            // All children of Placeable should have a constructor that takes to integers (x and y).
+            // If not, that is a programming error that we should fix immediately. That's why I shut
+            // down the program in the catch block.
             return placableClass.getConstructor(new Class<?>[] { int.class, int.class }).newInstance(x, y);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             logger.log(Level.SEVERE, "Error while trying to create a new instance of: " + placableClass.getName(), e);

@@ -8,12 +8,11 @@ import java.awt.*;
  */
 public class Text extends Placeable {
 
-    private String text;
+    private String text = "Text";
 
     public Text(int x, int y) {
         // Magic number is default height of a placeable Text object.
         super(x, y, 80, 20);
-        setText("Text");
     }
 
     public void setText(String text) {
@@ -32,7 +31,7 @@ public class Text extends Placeable {
     @Override
     public void showPropertiesDialog() {
         String newText = JOptionPane.showInputDialog("Enter text:");
-        if (newText != null && !newText.equals("")) {
+        if (newText != null && !newText.isEmpty()) {
             setText(newText);
         }
     }

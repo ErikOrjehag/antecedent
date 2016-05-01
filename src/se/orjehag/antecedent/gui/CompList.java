@@ -25,14 +25,16 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Color;
 
+/**
+ * List of all items that can be placed in a simulation.
+ */
 public class CompList extends JScrollPane {
 
     private JPanel panel;
     private static final Color TITLE_BACKGROUND_COLOR = new Color(200, 200, 200);
 
-    // I got this warning because this methods lists all the classes of the placeable components.
+    // OverlyCoupledMethod: I got this warning because this methods lists all the classes of the placeable components.
     // It's meant to be a list so there is not much I can do about it.
-    @SuppressWarnings("OverlyCoupledMethod")
     public CompList(JPanel dragPanel, SimComponent dropTarget) {
         super(new JPanel(), VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         panel = (JPanel) getViewport().getView();

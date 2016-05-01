@@ -12,6 +12,9 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Component used to drag items from the list on the left to the simlation on the right.
+ */
 public class CompListDraggable extends JComponent {
 
     private volatile int screenX = 0;
@@ -74,7 +77,8 @@ public class CompListDraggable extends JComponent {
 
         // null check to recover if the image loading failed.
         if (item.isOverTargetArea() && plusImage != null) {
-            g2d.drawImage(plusImage, 10, 10, 20, 20, null);
+            final int size = 20;
+            g2d.drawImage(plusImage, size / 2, size / 2, size, size, null);
         }
 
         g2d.setTransform(origTransform);

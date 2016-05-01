@@ -57,10 +57,13 @@ public class SimComponent extends JComponent implements MouseListener, MouseMoti
         simulation.draw(g2d);
     }
 
-    public void setSimulation(Simulation simulation) {
-        this.simulation = simulation;
-        this.simulation.addStepListener(this);
-        this.simulation.step();
+    public void setSimulation(Simulation sim) {
+        if (simulation != null) {
+            simulation.removeAll();
+        }
+        simulation = sim;
+        simulation.addStepListener(this);
+        simulation.step();
     }
 
     public Simulation getSimulation() {

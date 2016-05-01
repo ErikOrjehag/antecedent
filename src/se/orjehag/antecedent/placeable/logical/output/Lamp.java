@@ -14,6 +14,7 @@ public class Lamp extends Logical {
 
     @Override
     public boolean[] func(boolean[] in) {
+        assert in.length == 1;
         return new boolean[0];
     }
 

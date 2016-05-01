@@ -22,13 +22,13 @@ public abstract class Logical extends Placeable {
     public List<InputSocket> inputs = new ArrayList<>();
     public List<OutputSocket> outputs = new ArrayList<>();
     private boolean[] nextOutputs = null;
+    // I dont want this to be a Collection.
     private List<InteractionListener> interactionListeners = new ArrayList<>();
 
     private final Logger logger = Logger.getLogger(Logical.class.getName());
 
     protected Logical(int x, int y, int width, int height) {
         // Magic number 50 is default height and width.
-        //noinspection MagicNumber
         super(x, y, (width == -1 ? 50 : width), (height == -1 ? 50 : height));
     }
 
@@ -72,18 +72,14 @@ public abstract class Logical extends Placeable {
         // owner. This assertion was added because you are not allowed
         // to call this method on an instance of Logical that does not
         // own the socket.
-        //noinspection SuspiciousMethodCalls
         assert inputs.contains(socket) || outputs.contains(socket);
 
-        //noinspection SuspiciousMethodCalls
         boolean isInput = inputs.contains(socket);
-        //noinspection SuspiciousMethodCalls
         int index = isInput ? inputs.indexOf(socket) : outputs.indexOf(socket);
         int len = isInput ? inputs.size() : outputs.size();
         int x = (width / 2 + 10) * (isInput ? -1 : 1);
         final int spacing = 15;
         // Magic number 2 means dividing in half.
-        //noinspection MagicNumber
         int y = (int)(index * spacing + (len - 1) / 2.0f * -spacing);
         return new Vec2(x, y);
     }
@@ -111,7 +107,6 @@ public abstract class Logical extends Placeable {
 
         for (Socket socket : sockets) {
             // This is not suspicious, we need to know if its an input or output.
-            //noinspection SuspiciousMethodCalls
             boolean isInput = inputs.contains(socket);
             Vec2 pos = relativeSocketPosition(socket);
             g2d.drawLine(pos.x, pos.y, pos.x + 10 * (isInput ? 1 : -1), pos.y);
@@ -125,10 +120,9 @@ public abstract class Logical extends Placeable {
 
     // This method always returns true so that it can be used in an expression like:
     // logical.isSelected() && logical.disconnect()
-    public boolean disconnect() {
+    public void disconnect() {
         inputs.forEach(InputSocket::disconnect);
         outputs.forEach(OutputSocket::disconnect);
-        return true;
     }
 
     public void addInteractionListener(InteractionListener interactionListener) {
@@ -143,5 +137,17 @@ public abstract class Logical extends Placeable {
     public void addTo(Simulation simulation) {
         logger.log(Level.INFO, "Adding logical.");
         simulation.addLogical(this);
+    }
+
+    @Override
+    public void removeFrom(Simulation simulation) {
+        logger.log(Level.INFO, "Removing logical.");
+        simulation.removeLogical(this);
+    }
+
+    @Override
+    public void onRemove() {
+        super.onRemove();
+        disconnect();
     }
 }

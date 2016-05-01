@@ -10,13 +10,13 @@ public class FourBitDisplay extends Logical {
     public FourBitDisplay(int x, int y) {
         // Magic number 70 means the height is 70,
         // -1 means that we use the Logic default width.
-        //noinspection MagicNumber
         super(x, y, -1,  70);
         addInputs(4);
     }
 
     @Override
     public boolean[] func(boolean[] in) {
+        assert in.length == 4;
         return new boolean[0];
     }
 

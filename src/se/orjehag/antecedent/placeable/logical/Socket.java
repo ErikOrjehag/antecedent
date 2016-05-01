@@ -45,12 +45,6 @@ public abstract class Socket implements Serializable
         return owner.getPosition().plus(owner.relativeSocketPosition(this));
     }
 
-    // Even though this method is never called on a Socket but rather an
-    // InputSocket or OutputSocket I still think it makes since to
-    // keep this abstract method here because it shows intent.
-    // It makes sure that the children follow a consistent template
-    // and it might also be used directly on a Socket in the future.
-    @SuppressWarnings("unused")
     public abstract boolean getValue();
 
     public boolean isNear(Vec2 vec2) {

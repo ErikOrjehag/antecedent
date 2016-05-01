@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.geom.CubicCurve2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -217,7 +218,6 @@ public class Simulation implements Serializable, InteractionListener
     private void drawWire(Graphics2D g2d, Vec2 from, Vec2 to, boolean high) {
         CubicCurve2D curve = new CubicCurve2D.Float();
         // Magic number 2 means dividing in half.
-        //noinspection MagicNumber
         curve.setCurve(from.x, from.y, (from.x + to.x) / 2.0f,
                 from.y, (from.x + to.x) / 2.0f, to.y, to.x, to.y);
         g2d.setColor(Color.BLACK);
@@ -234,31 +234,61 @@ public class Simulation implements Serializable, InteractionListener
         placeable.addTo(this);
     }
 
+    public void remove(Placeable placeable) {
+        placeable.removeFrom(this);
+    }
+
+    public void removeAll() {
+        // I do this because I cant remove items from the list that I'm currently iterating.
+        List<Placeable> toRemove = new ArrayList<>();
+
+        for (Placeable placeable : placeables) {
+            toRemove.add(placeable);
+        }
+
+        for (Placeable placeable : toRemove) {
+            remove(placeable);
+        }
+    }
+
     public void addLogical(Logical logical) {
         placeables.add(logical);
         logicals.add(logical);
         logical.addInteractionListener(this);
-        logical.init();
+        logical.onAdd();
     }
 
     public void addPlacable(Placeable placeable) {
         placeables.add(placeable);
-        placeable.init();
+        placeable.onAdd();
+    }
+
+    public void removeLogical(Logical logical) {
+        placeables.remove(logical);
+        logicals.remove(logical);
+        logical.onRemove();
+    }
+
+    public void removePlacable(Placeable placable) {
+        placeables.remove(placable);
+        placable.onRemove();
     }
 
     public void removeSelected() {
-        // I did not want to use regular for loops because I got into
-        // trouble when I tried to iterate over the same list that I'm
-        // removing items from. I still had problems when I used Iterable
-        // and getNext() but this removeIf() method has solved the problem.
-        placeables.removeIf(e -> (e.isSelected()));
+        List<Placeable> selected = new ArrayList<>();
 
-        // This is a little hacky. The disconnect method will only be
-        // called if isSelected() evaluates to true. Disconnect always
-        // returns true.
+        for (Placeable placeable : placeables) {
+            if (placeable.isSelected()) {
+                selected.add(placeable);
+            }
+        }
+
         int len = logicals.size();
-        logicals.removeIf(e -> (e.isSelected() && e.disconnect()));
-        // Step simulation if a logical was removed.
+
+        for (Placeable placeable : selected) {
+            remove(placeable);
+        }
+
         if (logicals.size() != len) {
             step();
         }

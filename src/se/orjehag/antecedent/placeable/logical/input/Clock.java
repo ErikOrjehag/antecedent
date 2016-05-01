@@ -1,6 +1,5 @@
 package se.orjehag.antecedent.placeable.logical.input;
 
-import se.orjehag.antecedent.Vec2;
 import se.orjehag.antecedent.placeable.logical.Logical;
 
 import javax.swing.*;
@@ -13,12 +12,13 @@ public class Clock extends Logical {
 
     private boolean isHigh = false;
     private Timer timer;
+    private final static int DEFAULT_TIMER_MS = 500;
 
     public Clock(int x, int y) {
         super(x, y);
         addOutputs(1);
 
-        timer = new Timer(500, new AbstractAction()
+        timer = new Timer(DEFAULT_TIMER_MS, new AbstractAction()
         {
             @Override public void actionPerformed(final ActionEvent e) {
                 isHigh = !isHigh;
@@ -29,14 +29,20 @@ public class Clock extends Logical {
     }
 
     @Override
-    public void init() {
-        // Start the clock. We don't want to do this in the constructor because
-        // then the clock will switch on and of in the list to the left.
+    public void onAdd() {
+        super.onAdd();
         timer.start();
     }
 
     @Override
+    public void onRemove() {
+        super.onRemove();
+        timer.stop();
+    }
+
+    @Override
     public boolean[] func(boolean[] in) {
+        assert in.length == 0;
         return new boolean[]{ isHigh };
     }
 
@@ -47,11 +53,13 @@ public class Clock extends Logical {
     @Override
     public void showPropertiesDialog() {
         final int minimum = 100;
-        int timerMillis = minimum - 1;
 
         String input = JOptionPane.showInputDialog("Enter milliseconds (>= " + minimum + "):");
 
         if (input != null) {
+
+            int timerMillis = minimum - 1;
+
             try {
                 timerMillis = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -65,8 +73,5 @@ public class Clock extends Logical {
                 timer.setDelay(timerMillis);
             }
         }
-
-
-
     }
 }

@@ -2,6 +2,9 @@ package se.orjehag.antecedent.placeable.logical.flop;
 
 import se.orjehag.antecedent.placeable.logical.Logical;
 
+/**
+ * D Flip Flop
+ */
 public class Dflop extends Logical
 {
     private boolean prevClock = false;
@@ -14,11 +17,18 @@ public class Dflop extends Logical
     }
 
     @Override public boolean[] func(final boolean[] in) {
-	boolean risingClock = !prevClock && in[1];
-	prevClock = in[1];
+	assert in.length == 2;
+
+	boolean D = in[0];
+	boolean clock = in[1];
+
+	boolean risingClock = !prevClock && clock;
+	prevClock = clock;
+
 	if (risingClock) {
-	    Q = in[0];
+	    Q = D;
 	}
+
 	return new boolean[]{ Q, !Q };
     }
 

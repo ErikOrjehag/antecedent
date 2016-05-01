@@ -13,10 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-// I still want this class to be abstract to prevent someone
-// from creating an instance of this class because it does not
-// make any sense.
-@SuppressWarnings("AbstractClassWithoutAbstractMethods")
+// AbstractClassWithoutAbstractMethods: I still want this class to be abstract
+// to prevent someone from creating an instance of this class because it
+// does not make any sense.
 public abstract class Placeable implements Serializable
 {
     protected Vec2 position;
@@ -33,8 +32,16 @@ public abstract class Placeable implements Serializable
         this.height = height;
     }
 
-    public void init() {
+    // A warning tells me that this should be abstract but that is not correct.
+    // I want to be able to call this method on all placables but I want this
+    // to be a noop method in most cases. If I make this abstract I have to
+    // implement the body in all subclasses and I dont want to do that.
+    public void onAdd() {
         // This method is called when the placable is added to the simulation.
+    }
+
+    public void onRemove() {
+        // THis method is called when the placable is removed from the simulation.
     }
 
     public void draw(Graphics2D g2d) {
@@ -75,6 +82,7 @@ public abstract class Placeable implements Serializable
         }
     }
 
+    // I dont want this to be abstract. I want it to be noop in most cases.
     public void rightMouseReleased(Vec2 mousePos) {
 
     }
@@ -94,10 +102,16 @@ public abstract class Placeable implements Serializable
         simulation.addPlacable(this);
     }
 
+    public void removeFrom(Simulation simulation) {
+        logger.log(Level.INFO, "Removing placeable.");
+        simulation.removePlacable(this);
+    }
+
     public boolean contains(Vec2 vec) {
         return Math.abs(vec.x - position.x) < width / 2 && Math.abs(vec.y - position.y) < height / 2;
     }
 
+    // I dont want this to be abstract. I want it to be noop in most cases.
     public void showPropertiesDialog() {
         // Placables that have properties that they
         // want changed can override this method.

@@ -10,10 +10,6 @@ public class High extends Logical {
     public High(int x, int y) {
         super(x, y);
         addOutputs(1);
-    }
-
-    @Override
-    public void init() {
         // Propagate the constant high to the output socket.
         step();
         commit();
@@ -21,6 +17,7 @@ public class High extends Logical {
 
     @Override
     public boolean[] func(boolean[] in) {
+        assert in.length == 0;
         return new boolean[]{ true };
     }
 
